@@ -6,6 +6,10 @@ Note you need a prepass.dat from the standard:
 ./binding-tool/binding_prepass.py . prepass.dat
 ```
 
+The `bindingtypes.py` file is directly coming from the MPI standard
+documentation to help producing consistent types depending on the target MPI
+support.
+
 ## mpiiface.py
 
 This is the main consumer class

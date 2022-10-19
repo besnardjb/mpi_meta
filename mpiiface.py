@@ -1,222 +1,12 @@
 import json
 import copy
+from bindingtypes import BIG_C_KIND_MAP, SMALL_C_KIND_MAP
 
 class MPI_Standard_meta():
 
-    def _std2ckind_map_init(self):
-        # Taken from the standard
-        self._std2ckindmap ={
-            # Pointers
-            'BUFFER': 'void',
-            'C_BUFFER': 'void',
-            'C_BUFFER2': 'void',
-            'C_BUFFER3': 'void',
-            'C_BUFFER4': 'void',
-            'EXTRA_STATE': 'void',  # The '*' is added in bindingc.py
-            'EXTRA_STATE2': 'void',
-            'FUNCTION_SMALL': None,   # Every function pointer type is different
-            'FUNCTION': None,
-            'POLYFUNCTION': None,
-            'STRING': 'char',  # The '*' is added in bindingc.py
-            'STRING_ARRAY': 'char',
-            'STRING_2DARRAY': 'char',
-
-            'ARGUMENT_COUNT': 'int',
-            'ARGUMENT_LIST': 'char',
-
-            # Various types of integers
-            'ARRAY_LENGTH': 'int',
-            'ARRAY_LENGTH_NNI': 'int',
-            'ARRAY_LENGTH_PI': 'int',
-            'ATTRIBUTE_VAL_10': 'void',  # From MPI-1.0
-            'ATTRIBUTE_VAL': 'void',  # Current version of MPI
-            'BLOCKLENGTH': 'int',
-            'COLOR': 'int',
-            'COORDINATE': 'int',
-            'COORDINATE_NNI': 'int',
-            'DEGREE': 'int',
-            'DIMENSION': 'int',
-            'ENUM': 'int',
-            'FILE_DESCRIPTOR': 'int',
-            'KEY': 'int',
-            'KEYVAL': 'int',
-            'INDEX': 'int',
-            'LOGICAL': 'int',
-            'LOGICAL_OPTIONAL': 'int',
-            'LOGICAL_BOOLEAN': 'int',
-            'MATH': 'int',
-            'NUM_DIMS': 'int',
-            'RANK': 'int',
-            'RANK_NNI': 'int',
-            'COMM_SIZE': 'int',
-            'COMM_SIZE_PI': 'int',
-            'STRING_LENGTH': 'int',
-            'STRIDE_BYTES': 'MPI_Aint',
-            'STRIDE_ELEM': 'int',
-            'TAG': 'int',
-            'VERSION': 'int',
-            'WEIGHT': 'int',
-            'OFFSET': 'MPI_Offset',
-            'PROFILE_LEVEL': 'int',
-            'WINDOW_SIZE': 'MPI_Aint',
-            'INFO_VALUE_LENGTH': 'int',
-            'ACCESS_MODE': 'int',
-            'UPDATE_MODE': 'int',
-            'KEY_INDEX': 'int',
-            'TOOLENUM_INDEX': 'int',
-            'TOOLENUM_SIZE': 'int',
-            'TOOL_VAR_VERBOSITY': 'int',
-            'TOOL_VAR_VALUE': 'int',
-            'CVAR_INDEX': 'int',
-            'CVAR_INDEX_SPECIAL': 'int',
-            'PVAR_INDEX': 'int',
-            'PVAR_CLASS': 'int',
-            'CAT_INDEX': 'int',
-            'TIMESTAMP': 'int',
-            'TYPECLASS_SIZE': 'int',
-            'GENERIC_DTYPE_INT': 'int',
-            'GENERIC_DTYPE_COUNT': 'MPI_Count',
-            'PROCESS_GRID_SIZE': 'int',
-            'DTYPE_DISTRIBUTION': 'int',
-
-            # These are special.  See note in LIS_KIND_MAP for details.
-            'ALLOC_MEM_NUM_BYTES': 'MPI_Aint',
-            'PACK_EXTERNAL_SIZE': 'MPI_Aint',
-            'WIN_ATTACH_SIZE': 'MPI_Aint',
-
-            # See notes about these types in LIS_KIND_MAP.
-            'DISPLACEMENT_SMALL': 'int',
-            'DISPLACEMENT': 'MPI_Aint',
-
-            'RMA_DISPLACEMENT_SMALL': 'int',
-            'RMA_DISPLACEMENT': 'MPI_Aint',
-
-            'XFER_NUM_ELEM_SMALL': 'int',
-            'XFER_NUM_ELEM': 'MPI_Count',
-
-            'NUM_BYTES_SMALL': 'int',
-            'NUM_BYTES': 'MPI_Count',
-
-            'NUM_BYTES_NNI_SMALL': 'int',
-            'NUM_BYTES_NNI': 'MPI_Count',
-
-            # Enums
-            'ERROR_CODE': 'int',
-            'ERROR_CODE_SHOW_INTENT': 'int',
-            'ERROR_CLASS': 'int',
-            'ORDER': 'int',
-            'THREAD_LEVEL': 'int',
-            'COMBINER': 'int',
-            'LOCK_TYPE': 'int',
-            'TOOLS_ENUM': 'MPI_T_enum',
-            'BIND_TYPE': 'int',
-            'VARIABLE_SCOPE': 'int',
-            'ASSERT': 'int',
-            'TYPECLASS': 'int',
-            'GROUP_COMPARISON': 'int',
-            'COMM_COMPARISON': 'int',
-            'SPLIT_TYPE': 'int',
-            'TOPOLOGY_TYPE': 'int',
-            'DISTRIB_ENUM': 'int',
-
-            'DISPOFFSET_SMALL': 'MPI_Aint',
-            'DISPOFFSET': 'MPI_Count',
-
-
-            'DTYPE_NUM_ELEM_NNI_SMALL': 'int',
-            'DTYPE_NUM_ELEM_NNI': 'MPI_Count',
-
-
-            'DTYPE_NUM_ELEM_SMALL': 'int',
-            'DTYPE_NUM_ELEM': 'MPI_Count',
-
-
-            # Polymorphic types and their corresponding non-polymorphic types.
-            # Anything that is POLY* means that it has one type in <=MPI-3.1
-            # and a different type in >=MPI-4.0.
-            'POLYDISPLACEMENT': None,
-            'POLYRMA_DISPLACEMENT': None,
-            'POLYDISPOFFSET': None,
-            'POLYDTYPE_NUM_ELEM_NNI': None,
-            'POLYDTYPE_NUM_ELEM': None,
-            'POLYDTYPE_NUM_ELEM_PI': None,
-            'POLYTOOLS_NUM_ELEM': None,
-            'POLYNUM_BYTES': None,
-            'POLYNUM_BYTES_NNI': None,
-            'POLYXFER_NUM_ELEM': None,
-            'POLYXFER_NUM_ELEM_NNI': None,
-            'POLYDTYPE_STRIDE_BYTES': None,
-            'POLYDISPLACEMENT_COUNT': None,
-            'POLYDISPLACEMENT_AINT_COUNT': None,
-            'POLYDTYPE_PACK_SIZE': None,
-            'POLYRMA_DISPLACEMENT_NNI': None,
-            'POLYLOCATION': None,
-
-            'DTYPE_STRIDE_BYTES_SMALL': 'MPI_Aint',
-            'DTYPE_STRIDE_BYTES': 'MPI_Count',
-
-            'DTYPE_NUM_ELEM_PI_SMALL': 'int',
-            'DTYPE_NUM_ELEM_PI': 'MPI_Count',
-
-            'DTYPE_NUM_ELEM_SMALL': 'int',
-            'DTYPE_NUM_ELEM': 'MPI_Count',
-
-            'TOOLS_NUM_ELEM_SMALL': 'int',
-            'TOOLS_NUM_ELEM': 'MPI_Count',
-
-            'XFER_NUM_ELEM_NNI_SMALL': 'int',
-            'XFER_NUM_ELEM_NNI': 'MPI_Count',
-
-            'DISPLACEMENT_COUNT_SMALL': 'int',
-            'DISPLACEMENT_COUNT': 'MPI_Count',
-
-            'DISPLACEMENT_AINT_COUNT_SMALL': 'MPI_Aint',
-            'DISPLACEMENT_AINT_COUNT': 'MPI_Count',
-
-            'DTYPE_PACK_SIZE_SMALL': 'MPI_Aint',
-            'DTYPE_PACK_SIZE': 'MPI_Count',
-
-            'RMA_DISPLACEMENT_NNI_SMALL': 'int',
-            'RMA_DISPLACEMENT_NNI': 'MPI_Aint',
-
-            'LOCATION_SMALL': 'MPI_Aint',
-            'LOCATION': 'MPI_Count',
-
-            'ARRAY_LENGTH_NNI_SMALL': 'int',
-            'POLYARRAY_LENGTH_NNI': 'int',
-
-            # MPI handles
-            'COMMUNICATOR': 'MPI_Comm',
-            'DATATYPE': 'MPI_Datatype',
-            'ERRHANDLER': 'MPI_Errhandler',
-            'FILE': 'MPI_File',
-            'GROUP': 'MPI_Group',
-            'INFO': 'MPI_Info',
-            'MESSAGE': 'MPI_Message',
-            'REQUEST': 'MPI_Request',
-            'STATUS': 'MPI_Status',
-            'WINDOW': 'MPI_Win',
-            'OPERATION': 'MPI_Op',
-            'CVAR': 'MPI_T_cvar_handle',
-            'PVAR': 'MPI_T_pvar_handle',
-            'PVAR_SESSION': 'MPI_T_pvar_session',
-            'TOOL_MPI_OBJ': 'void',
-
-            # Special handles (needed for handle conversion bindings)
-            'F90_STATUS': 'MPI_Fint',
-            'F08_STATUS': 'MPI_F08_status',
-
-            # Special handle for VARARGS in MPI_Pcontrol
-            'VARARGS': '...',
-
-            # Specials for return types
-            'WALL_TIME': 'double',
-            'TICK_RESOLUTION': 'double',
-            'NOTHING': 'void'
-        }
-
-    def __init__(self, lang="std", fprefix="", fsuffix=""):
-        self._std2ckind_map_init()
+    def __init__(self, lang="std", fprefix="", fsuffix="", mpi_version="4.0.0"):
+        varray = [int(c) for c in mpi_version.split(".") ]
+        self._std2ckindmap = BIG_C_KIND_MAP if varray[0] >= 4 else SMALL_C_KIND_MAP
         self.lang = lang
         self.fprefix = fprefix
         self.fsuffix = fsuffix
@@ -382,7 +172,7 @@ class MPI_Parameter():
         return self._get_attr("constant")
 
     def kind_expand(self):
-        if (self.kind() == "FUNCTION") or (self.kind() == "FUNCTION_SMALL"):
+        if (self.kind() == "FUNCTION") or (self.kind() == "FUNCTION_SMALL") or self.kind() == "POLYFUNCTION":
             return self._get_attr("func_type")
         else:
             return self.meta.kind_expand(self.kind())
@@ -684,9 +474,8 @@ class MPI_Function():
 
 class MPI_Interface():
 
-    def _load_content(self, path):
-        with open(path, "r") as f:
-            self.standard_content = json.load(f)
+    def _load_content(self, f):
+        self.standard_content = json.load(f)
 
     def _load_function(self, meta=None):
         self.functions = {}

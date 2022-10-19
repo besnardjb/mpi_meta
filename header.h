@@ -5,7 +5,7 @@
 /**
  * @brief MPI function MPI_Abort
  * 
- * @param comm communicator of tasks to abort
+ * @param comm communicator of \MPI/ processes to abort
  * @param errorcode error code to return to invoking environment
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
@@ -31,8 +31,8 @@ int PMPI_Abort(MPI_Comm comm, int errorcode);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
-int PMPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
+int MPI_Accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
+int PMPI_Accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
 
 
 /*MPI_Add_error_class*/
@@ -113,16 +113,16 @@ MPI_Aint PMPI_Aint_diff(MPI_Aint addr1, MPI_Aint addr2);
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Allgather_init*/
@@ -132,18 +132,18 @@ int PMPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, vo
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allgather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Allgather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Allgather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Allgather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Allgatherv*/
@@ -153,17 +153,17 @@ int PMPI_Allgather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtyp
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Allgatherv_init*/
@@ -173,19 +173,19 @@ int PMPI_Allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, v
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allgatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Allgatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Allgatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Allgatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Alloc_mem*/
@@ -211,14 +211,14 @@ int PMPI_Alloc_mem(MPI_Aint size, MPI_Info info, void *baseptr);
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op operation
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-int PMPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int PMPI_Allreduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
 
 
 /*MPI_Allreduce_init*/
@@ -229,7 +229,7 @@ int PMPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype d
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op operation
  * @param comm communicator
  * @param info info argument
@@ -237,8 +237,8 @@ int PMPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype d
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Allreduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Allreduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Allreduce_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Allreduce_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Alltoall*/
@@ -248,16 +248,16 @@ int PMPI_Allreduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datat
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Alltoall_init*/
@@ -267,18 +267,18 @@ int PMPI_Alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, voi
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Alltoall_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Alltoall_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Alltoallv*/
@@ -287,19 +287,19 @@ int PMPI_Alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype
  * @brief MPI function MPI_Alltoallv
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param sdispls integer array (of length group size). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for process \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) specifying the number of elements that can be received from each rank
+ * @param recvcounts nonnegative integer array (of length group size) specifying the number of elements that can be received from each rank
  * @param rdispls integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Alltoallv_init*/
@@ -308,21 +308,21 @@ int PMPI_Alltoallv(const void *sendbuf, const int sendcounts[], const int sdispl
  * @brief MPI function MPI_Alltoallv_init
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param sdispls Integer array (of length group size). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for process \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) specifying the number of elements that can be received from each rank
+ * @param recvcounts nonnegative integer array (of length group size) specifying the number of elements that can be received from each rank
  * @param rdispls integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoallv_init(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Alltoallv_init(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Alltoallv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Alltoallv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Alltoallw*/
@@ -331,19 +331,19 @@ int PMPI_Alltoallv_init(const void *sendbuf, const int sendcounts[], const int s
  * @brief MPI function MPI_Alltoallw
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param sdispls integer array (of length group size). Entry \mpicode{j} specifies the displacement in bytes (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for process \mpicode{j}
  * @param sendtypes array of datatypes (of length group size). Entry \mpicode{j} specifies the type of data to send to process \mpicode{j}
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) specifying the number of elements that can be received from each rank
+ * @param recvcounts nonnegative integer array (of length group size) specifying the number of elements that can be received from each rank
  * @param rdispls integer array (of length group size). Entry \mpicode{i} specifies the displacement in bytes (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
  * @param recvtypes array of datatypes (of length group size). Entry \mpicode{i} specifies the type of data received from process \mpicode{i}
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoallw(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
-int PMPI_Alltoallw(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
+int MPI_Alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
+int PMPI_Alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
 
 
 /*MPI_Alltoallw_init*/
@@ -365,8 +365,8 @@ int PMPI_Alltoallw(const void *sendbuf, const int sendcounts[], const int sdispl
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Alltoallw_init(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Alltoallw_init(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Alltoallw_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Alltoallw_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Attr_delete*/
@@ -449,14 +449,14 @@ int PMPI_Barrier_init(MPI_Comm comm, MPI_Info info, MPI_Request *request);
  * 
  * @param buffer starting address of buffer
  * @param count number of entries in buffer
- * @param datatype data type of buffer
+ * @param datatype datatype of buffer
  * @param root rank of broadcast root
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm);
-int PMPI_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm);
+int MPI_Bcast(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm);
+int PMPI_Bcast(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm);
 
 
 /*MPI_Bcast_init*/
@@ -466,7 +466,7 @@ int PMPI_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Com
  * 
  * @param buffer starting address of buffer
  * @param count number of entries in buffer
- * @param datatype data type of buffer
+ * @param datatype datatype of buffer
  * @param root rank of broadcast root
  * @param comm communicator
  * @param info info argument
@@ -474,8 +474,8 @@ int PMPI_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Com
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Bcast_init(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Bcast_init(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Bcast_init(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Bcast_init(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Bsend*/
@@ -492,8 +492,8 @@ int PMPI_Bcast_init(void *buffer, int count, MPI_Datatype datatype, int root, MP
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Bsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
-int PMPI_Bsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int MPI_Bsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int PMPI_Bsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 
 
 /*MPI_Bsend_init*/
@@ -511,8 +511,8 @@ int PMPI_Bsend(const void *buf, int count, MPI_Datatype datatype, int dest, int 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Bsend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Bsend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Bsend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Bsend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Buffer_attach*/
@@ -525,8 +525,8 @@ int PMPI_Bsend_init(const void *buf, int count, MPI_Datatype datatype, int dest,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Buffer_attach(void *buffer, int size);
-int PMPI_Buffer_attach(void *buffer, int size);
+int MPI_Buffer_attach(void *buffer, MPI_Count size);
+int PMPI_Buffer_attach(void *buffer, MPI_Count size);
 
 
 /*MPI_Buffer_detach*/
@@ -539,8 +539,8 @@ int PMPI_Buffer_attach(void *buffer, int size);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Buffer_detach(void *buffer_addr, int *size);
-int PMPI_Buffer_detach(void *buffer_addr, int *size);
+int MPI_Buffer_detach(void *buffer_addr, MPI_Count *size);
+int PMPI_Buffer_detach(void *buffer_addr, MPI_Count *size);
 
 
 /*MPI_Cancel*/
@@ -616,7 +616,7 @@ int PMPI_Cart_get(MPI_Comm comm, int maxdims, int dims[], int periods[], int coo
  * @param ndims number of dimensions of Cartesian structure
  * @param dims integer array of size \mpiarg{ndims} specifying the number of processes in each coordinate direction
  * @param periods logical array of size \mpiarg{ndims} specifying the periodicity specification in each coordinate direction
- * @param newrank reordered rank of the calling process; \const{MPI_UNDEFINED} if calling process does not belong to grid
+ * @param newrank reordered rank of the calling process; \mpiconst{MPI_UNDEFINED} if calling process does not belong to grid
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1143,7 +1143,7 @@ int PMPI_Comm_set_info(MPI_Comm comm, MPI_Info info);
  * @brief MPI function MPI_Comm_set_name
  * 
  * @param comm communicator whose identifier is to be set
- * @param comm_name the character string which is remembered as the name
+ * @param comm_name the character string that is remembered as the name
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1177,7 +1177,7 @@ int PMPI_Comm_size(MPI_Comm comm, int *size);
  * @param root rank of process in which previous arguments are examined
  * @param comm intra-communicator containing group of spawning processes
  * @param intercomm inter-communicator between original group and the newly spawned group
- * @param array_of_errcodes one code per process (array of integer)
+ * @param array_of_errcodes one code per process
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1357,7 +1357,7 @@ int PMPI_Dist_graph_neighbors(MPI_Comm comm, int maxindegree, int sources[], int
  * @param comm communicator with distributed graph topology
  * @param indegree number of edges into this process
  * @param outdegree number of edges out of this process
- * @param weighted \mpicode{false} if \const{MPI_UNWEIGHTED} was supplied during creation, \mpicode{true} otherwise
+ * @param weighted \mpicode{false} if \mpiconst{MPI_UNWEIGHTED} was supplied during creation, \mpicode{true} otherwise
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1415,14 +1415,14 @@ int PMPI_Error_string(int errorcode, char *string, int *resultlen);
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm intra-communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Exscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-int PMPI_Exscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int MPI_Exscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int PMPI_Exscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
 
 
 /*MPI_Exscan_init*/
@@ -1433,7 +1433,7 @@ int PMPI_Exscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype data
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm intra-communicator
  * @param info info argument
@@ -1441,8 +1441,8 @@ int PMPI_Exscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype data
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Exscan_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Exscan_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Exscan_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Exscan_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Fetch_and_op*/
@@ -1539,7 +1539,7 @@ int PMPI_File_get_amode(MPI_File fh, int *amode);
  * @brief MPI function MPI_File_get_atomicity
  * 
  * @param fh file handle
- * @param flag \constskip{true} if atomic mode, \constskip{false} if nonatomic mode
+ * @param flag \mpicode{true} if atomic mode, \mpicode{false} if nonatomic mode
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1582,7 +1582,7 @@ int PMPI_File_get_errhandler(MPI_File file, MPI_Errhandler *errhandler);
  * @brief MPI function MPI_File_get_group
  * 
  * @param fh file handle
- * @param group group which opened the file
+ * @param group group that opened the file
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -1657,8 +1657,8 @@ int PMPI_File_get_size(MPI_File fh, MPI_Offset *size);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_get_type_extent(MPI_File fh, MPI_Datatype datatype, MPI_Aint *extent);
-int PMPI_File_get_type_extent(MPI_File fh, MPI_Datatype datatype, MPI_Aint *extent);
+int MPI_File_get_type_extent(MPI_File fh, MPI_Datatype datatype, MPI_Count *extent);
+int PMPI_File_get_type_extent(MPI_File fh, MPI_Datatype datatype, MPI_Count *extent);
 
 
 /*MPI_File_get_view*/
@@ -1691,8 +1691,8 @@ int PMPI_File_get_view(MPI_File fh, MPI_Offset *disp, MPI_Datatype *etype, MPI_D
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iread(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iread(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iread(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iread(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iread_all*/
@@ -1708,8 +1708,8 @@ int PMPI_File_iread(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MP
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iread_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iread_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iread_all(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iread_all(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iread_at*/
@@ -1726,8 +1726,8 @@ int PMPI_File_iread_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iread_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iread_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iread_at(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iread_at(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iread_at_all*/
@@ -1744,8 +1744,8 @@ int PMPI_File_iread_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iread_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iread_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iread_at_all(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iread_at_all(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iread_shared*/
@@ -1761,8 +1761,8 @@ int PMPI_File_iread_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iread_shared(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iread_shared(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iread_shared(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iread_shared(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iwrite*/
@@ -1778,8 +1778,8 @@ int PMPI_File_iread_shared(MPI_File fh, void *buf, int count, MPI_Datatype datat
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iwrite(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iwrite(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iwrite(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iwrite(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iwrite_all*/
@@ -1795,8 +1795,8 @@ int PMPI_File_iwrite(MPI_File fh, const void *buf, int count, MPI_Datatype datat
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iwrite_all(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iwrite_all(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iwrite_all(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iwrite_all(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iwrite_at*/
@@ -1813,8 +1813,8 @@ int PMPI_File_iwrite_all(MPI_File fh, const void *buf, int count, MPI_Datatype d
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iwrite_at(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iwrite_at(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iwrite_at(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iwrite_at(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iwrite_at_all*/
@@ -1831,8 +1831,8 @@ int PMPI_File_iwrite_at(MPI_File fh, MPI_Offset offset, const void *buf, int cou
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iwrite_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iwrite_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iwrite_at_all(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iwrite_at_all(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_iwrite_shared*/
@@ -1848,8 +1848,8 @@ int PMPI_File_iwrite_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_iwrite_shared(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
-int PMPI_File_iwrite_shared(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Request *request);
+int MPI_File_iwrite_shared(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
+int PMPI_File_iwrite_shared(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Request *request);
 
 
 /*MPI_File_open*/
@@ -1896,8 +1896,8 @@ int PMPI_File_preallocate(MPI_File fh, MPI_Offset size);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_read_all*/
@@ -1913,8 +1913,8 @@ int PMPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read_all(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read_all(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_read_all_begin*/
@@ -1929,8 +1929,8 @@ int PMPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_all_begin(MPI_File fh, void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_read_all_begin(MPI_File fh, void *buf, int count, MPI_Datatype datatype);
+int MPI_File_read_all_begin(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_read_all_begin(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_read_all_end*/
@@ -1962,8 +1962,8 @@ int PMPI_File_read_all_end(MPI_File fh, void *buf, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_read_at_all*/
@@ -1980,8 +1980,8 @@ int PMPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_read_at_all_begin*/
@@ -1997,8 +1997,8 @@ int PMPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_at_all_begin(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_read_at_all_begin(MPI_File fh, MPI_Offset offset, void *buf, int count, MPI_Datatype datatype);
+int MPI_File_read_at_all_begin(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_read_at_all_begin(MPI_File fh, MPI_Offset offset, void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_read_at_all_end*/
@@ -2029,8 +2029,8 @@ int PMPI_File_read_at_all_end(MPI_File fh, void *buf, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_ordered(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read_ordered(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read_ordered(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read_ordered(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_read_ordered_begin*/
@@ -2045,8 +2045,8 @@ int PMPI_File_read_ordered(MPI_File fh, void *buf, int count, MPI_Datatype datat
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_ordered_begin(MPI_File fh, void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_read_ordered_begin(MPI_File fh, void *buf, int count, MPI_Datatype datatype);
+int MPI_File_read_ordered_begin(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_read_ordered_begin(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_read_ordered_end*/
@@ -2077,8 +2077,8 @@ int PMPI_File_read_ordered_end(MPI_File fh, void *buf, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_read_shared(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_read_shared(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_read_shared(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_read_shared(MPI_File fh, void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_seek*/
@@ -2117,7 +2117,7 @@ int PMPI_File_seek_shared(MPI_File fh, MPI_Offset offset, int whence);
  * @brief MPI function MPI_File_set_atomicity
  * 
  * @param fh file handle
- * @param flag \constskip{true} to set atomic mode, \constskip{false} to set nonatomic mode
+ * @param flag \mpicode{true} to set atomic mode, \mpicode{false} to set nonatomic mode
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -2211,8 +2211,8 @@ int PMPI_File_sync(MPI_File fh);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_write_all*/
@@ -2228,8 +2228,8 @@ int PMPI_File_write(MPI_File fh, const void *buf, int count, MPI_Datatype dataty
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_all(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write_all(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write_all(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write_all(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_write_all_begin*/
@@ -2244,8 +2244,8 @@ int PMPI_File_write_all(MPI_File fh, const void *buf, int count, MPI_Datatype da
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_all_begin(MPI_File fh, const void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_write_all_begin(MPI_File fh, const void *buf, int count, MPI_Datatype datatype);
+int MPI_File_write_all_begin(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_write_all_begin(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_write_all_end*/
@@ -2277,8 +2277,8 @@ int PMPI_File_write_all_end(MPI_File fh, const void *buf, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_at(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write_at(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write_at(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write_at(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_write_at_all*/
@@ -2295,8 +2295,8 @@ int PMPI_File_write_at(MPI_File fh, MPI_Offset offset, const void *buf, int coun
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write_at_all(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_write_at_all_begin*/
@@ -2312,8 +2312,8 @@ int PMPI_File_write_at_all(MPI_File fh, MPI_Offset offset, const void *buf, int 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_at_all_begin(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_write_at_all_begin(MPI_File fh, MPI_Offset offset, const void *buf, int count, MPI_Datatype datatype);
+int MPI_File_write_at_all_begin(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_write_at_all_begin(MPI_File fh, MPI_Offset offset, const void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_write_at_all_end*/
@@ -2344,8 +2344,8 @@ int PMPI_File_write_at_all_end(MPI_File fh, const void *buf, MPI_Status *status)
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_ordered(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write_ordered(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write_ordered(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write_ordered(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_File_write_ordered_begin*/
@@ -2360,8 +2360,8 @@ int PMPI_File_write_ordered(MPI_File fh, const void *buf, int count, MPI_Datatyp
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_ordered_begin(MPI_File fh, const void *buf, int count, MPI_Datatype datatype);
-int PMPI_File_write_ordered_begin(MPI_File fh, const void *buf, int count, MPI_Datatype datatype);
+int MPI_File_write_ordered_begin(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype);
+int PMPI_File_write_ordered_begin(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype);
 
 
 /*MPI_File_write_ordered_end*/
@@ -2392,8 +2392,8 @@ int PMPI_File_write_ordered_end(MPI_File fh, const void *buf, MPI_Status *status
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_File_write_shared(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
-int PMPI_File_write_shared(MPI_File fh, const void *buf, int count, MPI_Datatype datatype, MPI_Status *status);
+int MPI_File_write_shared(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
+int PMPI_File_write_shared(MPI_File fh, const void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Status *status);
 
 
 /*MPI_Finalize*/
@@ -2442,17 +2442,17 @@ int PMPI_Free_mem(void *base);
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements for any single receive
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
-int PMPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int MPI_Gather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int PMPI_Gather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
 
 
 /*MPI_Gather_init*/
@@ -2462,10 +2462,10 @@ int PMPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void 
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements for any single receive
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  * @param info info argument
@@ -2473,8 +2473,8 @@ int PMPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Gather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Gather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Gather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Gather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Gatherv*/
@@ -2484,18 +2484,18 @@ int PMPI_Gather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement relative to \mpiarg{recvbuf} at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm);
-int PMPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm);
+int MPI_Gatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm);
+int PMPI_Gatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm);
 
 
 /*MPI_Gatherv_init*/
@@ -2505,11 +2505,11 @@ int PMPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement relative to \mpiarg{recvbuf} at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  * @param info info argument
@@ -2517,8 +2517,8 @@ int PMPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Gatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Gatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Gatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Gatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Get*/
@@ -2537,8 +2537,8 @@ int PMPI_Gatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win);
-int PMPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win);
+int MPI_Get(void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win);
+int PMPI_Get(void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win);
 
 
 /*MPI_Get_accumulate*/
@@ -2561,8 +2561,8 @@ int PMPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Get_accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, void *result_addr, int result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
-int PMPI_Get_accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, void *result_addr, int result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
+int MPI_Get_accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, void *result_addr, MPI_Count result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
+int PMPI_Get_accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, void *result_addr, MPI_Count result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win);
 
 
 /*MPI_Get_address*/
@@ -2590,8 +2590,8 @@ int PMPI_Get_address(const void *location, MPI_Aint *address);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count);
-int PMPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count);
+int MPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, MPI_Count *count);
+int PMPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, MPI_Count *count);
 
 
 /*MPI_Get_elements*/
@@ -2605,8 +2605,8 @@ int PMPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Get_elements(const MPI_Status *status, MPI_Datatype datatype, int *count);
-int PMPI_Get_elements(const MPI_Status *status, MPI_Datatype datatype, int *count);
+int MPI_Get_elements(const MPI_Status *status, MPI_Datatype datatype, MPI_Count *count);
+int PMPI_Get_elements(const MPI_Status *status, MPI_Datatype datatype, MPI_Count *count);
 
 
 /*MPI_Get_elements_x*/
@@ -2710,7 +2710,7 @@ int PMPI_Graph_get(MPI_Comm comm, int maxindex, int maxedges, int index[], int e
  * @param nnodes number of graph nodes
  * @param index integer array specifying the graph structure, see \mpifunc{MPI_GRAPH_CREATE}
  * @param edges integer array specifying the graph structure
- * @param newrank reordered rank of the calling process; \const{MPI_UNDEFINED} if the calling process does not belong to graph
+ * @param newrank reordered rank of the calling process; \mpiconst{MPI_UNDEFINED} if the calling process does not belong to graph
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -2830,7 +2830,7 @@ int PMPI_Group_difference(MPI_Group group1, MPI_Group group2, MPI_Group *newgrou
  * @brief MPI function MPI_Group_excl
  * 
  * @param group group
- * @param n number of elements in array ranks
+ * @param n number of elements in array \mpiarg{ranks}
  * @param ranks array of integer ranks of processes in \mpiarg{group} not to appear in \mpiarg{newgroup}
  * @param newgroup new group derived from above, preserving the order defined by \mpiarg{group}
  *
@@ -2864,8 +2864,8 @@ int PMPI_Group_free(MPI_Group *group);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Group_from_session_pset(ERR session, const char *pset_name, MPI_Group *newgroup);
-int PMPI_Group_from_session_pset(ERR session, const char *pset_name, MPI_Group *newgroup);
+int MPI_Group_from_session_pset(MPI_Session session, const char *pset_name, MPI_Group *newgroup);
+int PMPI_Group_from_session_pset(MPI_Session session, const char *pset_name, MPI_Group *newgroup);
 
 
 /*MPI_Group_incl*/
@@ -2874,7 +2874,7 @@ int PMPI_Group_from_session_pset(ERR session, const char *pset_name, MPI_Group *
  * @brief MPI function MPI_Group_incl
  * 
  * @param group group
- * @param n number of elements in array ranks (and size of \mpiarg{newgroup})
+ * @param n number of elements in array \mpiarg{ranks} (and size of \mpiarg{newgroup})
  * @param ranks ranks of processes in \mpiarg{group} to appear in \mpiarg{newgroup}
  * @param newgroup new group derived from above, in the order defined by \mpiarg{ranks}
  *
@@ -2937,7 +2937,7 @@ int PMPI_Group_range_incl(MPI_Group group, int n, int ranges[][3], MPI_Group *ne
  * @brief MPI function MPI_Group_rank
  * 
  * @param group group
- * @param rank rank of the calling process in group, or \const{MPI_UNDEFINED} if the process is not a member
+ * @param rank rank of the calling process in group, or \mpiconst{MPI_UNDEFINED} if the process is not a member
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -2968,7 +2968,7 @@ int PMPI_Group_size(MPI_Group group, int *size);
  * @param n number of ranks in \mpiarg{ranks1} and \mpiarg{ranks2} arrays
  * @param ranks1 array of zero or more valid ranks in group1
  * @param group2 group2
- * @param ranks2 array of corresponding ranks in group2, \const{MPI_UNDEFINED} when no correspondence exists.
+ * @param ranks2 array of corresponding ranks in group2, \mpiconst{MPI_UNDEFINED} when no correspondence exists.
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -2998,17 +2998,17 @@ int PMPI_Group_union(MPI_Group group1, MPI_Group group2, MPI_Group *newgroup);
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iallgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iallgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Iallgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iallgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Iallgatherv*/
@@ -3018,18 +3018,18 @@ int PMPI_Iallgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, v
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iallgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iallgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Iallgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iallgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Iallreduce*/
@@ -3040,15 +3040,15 @@ int PMPI_Iallgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op operation
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iallreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iallreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int MPI_Iallreduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iallreduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ialltoall*/
@@ -3058,17 +3058,17 @@ int PMPI_Iallreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype 
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements received from any process
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ialltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ialltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ialltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ialltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ialltoallv*/
@@ -3077,20 +3077,20 @@ int PMPI_Ialltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, vo
  * @brief MPI function MPI_Ialltoallv
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param sdispls integer array (of length group size). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for process \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) specifying the number of elements that can be received from each rank
+ * @param recvcounts nonnegative integer array (of length group size) specifying the number of elements that can be received from each rank
  * @param rdispls integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ialltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ialltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ialltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ialltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ialltoallw*/
@@ -3111,8 +3111,8 @@ int PMPI_Ialltoallv(const void *sendbuf, const int sendcounts[], const int sdisp
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ialltoallw(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
-int PMPI_Ialltoallw(const void *sendbuf, const int sendcounts[], const int sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const int rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
+int MPI_Ialltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
+int PMPI_Ialltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ibarrier*/
@@ -3136,15 +3136,15 @@ int PMPI_Ibarrier(MPI_Comm comm, MPI_Request *request);
  * 
  * @param buffer starting address of buffer
  * @param count number of entries in buffer
- * @param datatype data type of buffer
+ * @param datatype datatype of buffer
  * @param root rank of broadcast root
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ibcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ibcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Ibcast(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ibcast(void *buffer, MPI_Count count, MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ibsend*/
@@ -3162,8 +3162,8 @@ int PMPI_Ibcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Co
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ibsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ibsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Ibsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ibsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Iexscan*/
@@ -3174,15 +3174,15 @@ int PMPI_Ibsend(const void *buf, int count, MPI_Datatype datatype, int dest, int
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm intra-communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iexscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iexscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int MPI_Iexscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iexscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Igather*/
@@ -3192,18 +3192,18 @@ int PMPI_Iexscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype dat
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements for any single receive
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Igather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Igather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Igather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Igather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Igatherv*/
@@ -3213,19 +3213,19 @@ int PMPI_Igather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements in send buffer
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) containing the number of elements that are received from each process
+ * @param recvcounts nonnegative integer array (of length group size) containing the number of elements that are received from each process
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement relative to \mpiarg{recvbuf} at which to place the incoming data from process \mpicode{i}
- * @param recvtype data type of recv buffer elements
+ * @param recvtype datatype of recv buffer elements
  * @param root rank of receiving process
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Igatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Igatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Igatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Igatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Improbe*/
@@ -3233,10 +3233,10 @@ int PMPI_Igatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, voi
 /**
  * @brief MPI function MPI_Improbe
  * 
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
- * @param flag flag
+ * @param flag \mpicode{true} if there is a matching message that can be received
  * @param message returned message
  * @param status 
  *
@@ -3259,8 +3259,8 @@ int PMPI_Improbe(int source, int tag, MPI_Comm comm, int *flag, MPI_Message *mes
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Imrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *message, MPI_Request *request);
-int PMPI_Imrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *message, MPI_Request *request);
+int MPI_Imrecv(void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Message *message, MPI_Request *request);
+int PMPI_Imrecv(void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Message *message, MPI_Request *request);
 
 
 /*MPI_Ineighbor_allgather*/
@@ -3270,17 +3270,17 @@ int PMPI_Imrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *messag
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ineighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ineighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ineighbor_allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ineighbor_allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ineighbor_allgatherv*/
@@ -3290,18 +3290,18 @@ int PMPI_Ineighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype se
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) containing the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) containing the number of elements that are received from each neighbor
  * @param displs integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ineighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ineighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ineighbor_allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ineighbor_allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ineighbor_alltoall*/
@@ -3311,17 +3311,17 @@ int PMPI_Ineighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype s
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ineighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ineighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ineighbor_alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ineighbor_alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ineighbor_alltoallv*/
@@ -3330,20 +3330,20 @@ int PMPI_Ineighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype sen
  * @brief MPI function MPI_Ineighbor_alltoallv
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which send the outgoing data to neighbor \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ineighbor_alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ineighbor_alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int MPI_Ineighbor_alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ineighbor_alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ineighbor_alltoallw*/
@@ -3352,11 +3352,11 @@ int PMPI_Ineighbor_alltoallv(const void *sendbuf, const int sendcounts[], const 
  * @brief MPI function MPI_Ineighbor_alltoallw
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement in bytes (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for neighbor \mpicode{j}
  * @param sendtypes array of datatypes (of length outdegree). Entry \mpicode{j} specifies the type of data to send to neighbor \mpicode{j}
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement in bytes (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
  * @param recvtypes array of datatypes (of length indegree). Entry \mpicode{i} specifies the type of data received from neighbor \mpicode{i}
  * @param comm communicator with topology structure
@@ -3364,8 +3364,8 @@ int PMPI_Ineighbor_alltoallv(const void *sendbuf, const int sendcounts[], const 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ineighbor_alltoallw(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
-int PMPI_Ineighbor_alltoallw(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
+int MPI_Ineighbor_alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
+int PMPI_Ineighbor_alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Info_create*/
@@ -3416,7 +3416,7 @@ int PMPI_Info_delete(MPI_Info info, const char *key);
  * @brief MPI function MPI_Info_dup
  * 
  * @param info info object
- * @param newinfo info object
+ * @param newinfo info object created
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -3444,9 +3444,9 @@ int PMPI_Info_free(MPI_Info *info);
  * 
  * @param info info object
  * @param key key
- * @param valuelen length of value arg
+ * @param valuelen length of value associated with \mpiarg{key}
  * @param value value
- * @param flag \constskip{true} if key defined, \constskip{false} if not
+ * @param flag \mpicode{true} if \mpiarg{key} defined, \mpicode{false} if not
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -3492,7 +3492,7 @@ int PMPI_Info_get_nthkey(MPI_Info info, int n, char *key);
  * @param key key
  * @param buflen length of buffer
  * @param value value
- * @param flag \constskip{true} if key defined, \constskip{false} if not
+ * @param flag \mpicode{true} if \mpiarg{key} defined, \mpicode{false} if not
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -3507,8 +3507,8 @@ int PMPI_Info_get_string(MPI_Info info, const char *key, int *buflen, char *valu
  * 
  * @param info info object
  * @param key key
- * @param valuelen length of value arg
- * @param flag \constskip{true} if key defined, \constskip{false} if not
+ * @param valuelen length of value associated with \mpiarg{key}
+ * @param flag \mpicode{true} if \mpiarg{key} defined, \mpicode{false} if not
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -3632,10 +3632,10 @@ int PMPI_Intercomm_merge(MPI_Comm intercomm, int high, MPI_Comm *newintracomm);
 /**
  * @brief MPI function MPI_Iprobe
  * 
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
- * @param flag 
+ * @param flag \mpicode{true} if there is a matching message that can be received
  * @param status 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
@@ -3652,15 +3652,15 @@ int PMPI_Iprobe(int source, int tag, MPI_Comm comm, int *flag, MPI_Status *statu
  * @param buf initial address of receive buffer
  * @param count number of elements in receive buffer
  * @param datatype datatype of each receive buffer element
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param request 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Irecv(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Irecv(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ireduce*/
@@ -3671,7 +3671,7 @@ int PMPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
  * @param sendbuf address of send buffer
  * @param recvbuf address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op reduce operation
  * @param root rank of root process
  * @param comm communicator
@@ -3679,8 +3679,8 @@ int PMPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ireduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ireduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Ireduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ireduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ireduce_scatter*/
@@ -3690,16 +3690,16 @@ int PMPI_Ireduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype dat
  * 
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array specifying the number of elements in result distributed to each process. This array must be identical on all calling processes.
- * @param datatype data type of elements of input buffer
+ * @param recvcounts nonnegative integer array specifying the number of elements in result distributed to each process. This array must be identical on all calling processes.
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ireduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ireduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int MPI_Ireduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ireduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Ireduce_scatter_block*/
@@ -3710,15 +3710,15 @@ int PMPI_Ireduce_scatter(const void *sendbuf, void *recvbuf, const int recvcount
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param recvcount element count per block
- * @param datatype data type of elements of send and receive buffers
+ * @param datatype datatype of elements of send and receive buffers
  * @param op operation
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int MPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Irsend*/
@@ -3736,8 +3736,8 @@ int PMPI_Ireduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Irsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Irsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Irsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Irsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Is_thread_main*/
@@ -3761,15 +3761,15 @@ int PMPI_Is_thread_main(int *flag);
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int MPI_Iscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iscan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Iscatter*/
@@ -3779,18 +3779,18 @@ int PMPI_Iscan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datat
  * 
  * @param sendbuf address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iscatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iscatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Iscatter(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iscatter(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Iscatterv*/
@@ -3799,20 +3799,20 @@ int PMPI_Iscatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, voi
  * @brief MPI function MPI_Iscatterv
  * 
  * @param sendbuf address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data to process \mpicode{i}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Iscatterv(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
-int PMPI_Iscatterv(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int MPI_Iscatterv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
+int PMPI_Iscatterv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Isend*/
@@ -3830,8 +3830,8 @@ int PMPI_Iscatterv(const void *sendbuf, const int sendcounts[], const int displs
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Isend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Isend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Isend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Isend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Isendrecv*/
@@ -3847,15 +3847,15 @@ int PMPI_Isend(const void *buf, int count, MPI_Datatype datatype, int dest, int 
  * @param recvbuf initial address of receive buffer
  * @param recvcount number of elements in receive buffer
  * @param recvtype datatype of each receive buffer element
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param recvtag receive tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param recvtag receive tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param request 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Isendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Isendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
+int MPI_Isendrecv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Isendrecv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Isendrecv_replace*/
@@ -3868,15 +3868,15 @@ int PMPI_Isendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, in
  * @param datatype type of elements in send and receive buffer
  * @param dest rank of destination
  * @param sendtag send message tag
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param recvtag receive message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param recvtag receive message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param request 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Isendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Isendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
+int MPI_Isendrecv_replace(void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Isendrecv_replace(void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Issend*/
@@ -3894,8 +3894,8 @@ int PMPI_Isendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Issend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Issend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Issend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Issend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Keyval_create*/
@@ -3947,8 +3947,8 @@ int PMPI_Lookup_name(const char *service_name, MPI_Info info, char *port_name);
 /**
  * @brief MPI function MPI_Mprobe
  * 
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param message returned message
  * @param status 
@@ -3972,8 +3972,8 @@ int PMPI_Mprobe(int source, int tag, MPI_Comm comm, MPI_Message *message, MPI_St
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Mrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *message, MPI_Status *status);
-int PMPI_Mrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *message, MPI_Status *status);
+int MPI_Mrecv(void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Message *message, MPI_Status *status);
+int PMPI_Mrecv(void *buf, MPI_Count count, MPI_Datatype datatype, MPI_Message *message, MPI_Status *status);
 
 
 /*MPI_Neighbor_allgather*/
@@ -3983,16 +3983,16 @@ int PMPI_Mrecv(void *buf, int count, MPI_Datatype datatype, MPI_Message *message
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Neighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Neighbor_allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Neighbor_allgather(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Neighbor_allgather_init*/
@@ -4002,18 +4002,18 @@ int PMPI_Neighbor_allgather(const void *sendbuf, int sendcount, MPI_Datatype sen
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_allgather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Neighbor_allgather_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Neighbor_allgather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Neighbor_allgather_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Neighbor_allgatherv*/
@@ -4023,17 +4023,17 @@ int PMPI_Neighbor_allgather_init(const void *sendbuf, int sendcount, MPI_Datatyp
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) containing the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) containing the number of elements that are received from each neighbor
  * @param displs integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Neighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Neighbor_allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Neighbor_allgatherv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Neighbor_allgatherv_init*/
@@ -4043,19 +4043,19 @@ int PMPI_Neighbor_allgatherv(const void *sendbuf, int sendcount, MPI_Datatype se
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) containing the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) containing the number of elements that are received from each neighbor
  * @param displs integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_allgatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Neighbor_allgatherv_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Neighbor_allgatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Neighbor_allgatherv_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint displs[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Neighbor_alltoall*/
@@ -4065,16 +4065,16 @@ int PMPI_Neighbor_allgatherv_init(const void *sendbuf, int sendcount, MPI_Dataty
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Neighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Neighbor_alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Neighbor_alltoall(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Neighbor_alltoall_init*/
@@ -4084,18 +4084,18 @@ int PMPI_Neighbor_alltoall(const void *sendbuf, int sendcount, MPI_Datatype send
  * 
  * @param sendbuf starting address of send buffer
  * @param sendcount number of elements sent to each neighbor
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
  * @param recvcount number of elements received from each neighbor
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Neighbor_alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Neighbor_alltoall_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Neighbor_alltoall_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Neighbor_alltoallv*/
@@ -4104,19 +4104,19 @@ int PMPI_Neighbor_alltoall_init(const void *sendbuf, int sendcount, MPI_Datatype
  * @brief MPI function MPI_Neighbor_alltoallv
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which to send the outgoing data to neighbor \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
-int PMPI_Neighbor_alltoallv(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
+int MPI_Neighbor_alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
+int PMPI_Neighbor_alltoallv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm);
 
 
 /*MPI_Neighbor_alltoallv_init*/
@@ -4125,21 +4125,21 @@ int PMPI_Neighbor_alltoallv(const void *sendbuf, const int sendcounts[], const i
  * @brief MPI function MPI_Neighbor_alltoallv_init
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement (relative to \mpiarg{sendbuf}) from which send the outgoing data to neighbor \mpicode{j}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param comm communicator with topology structure
  * @param info info argument
  * @param request communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoallv_init(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Neighbor_alltoallv_init(const void *sendbuf, const int sendcounts[], const int sdispls[], MPI_Datatype sendtype, void *recvbuf, const int recvcounts[], const int rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Neighbor_alltoallv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Neighbor_alltoallv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], MPI_Datatype sendtype, void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], MPI_Datatype recvtype, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Neighbor_alltoallw*/
@@ -4148,19 +4148,19 @@ int PMPI_Neighbor_alltoallv_init(const void *sendbuf, const int sendcounts[], co
  * @brief MPI function MPI_Neighbor_alltoallw
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement in bytes (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for neighbor \mpicode{j}
  * @param sendtypes array of datatypes (of length outdegree). Entry \mpicode{j} specifies the type of data to send to neighbor \mpicode{j}
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement in bytes (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
  * @param recvtypes array of datatypes (of length indegree). Entry \mpicode{i} specifies the type of data received from neighbor \mpicode{i}
  * @param comm communicator with topology structure
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
-int PMPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
+int MPI_Neighbor_alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
+int PMPI_Neighbor_alltoallw(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm);
 
 
 /*MPI_Neighbor_alltoallw_init*/
@@ -4169,11 +4169,11 @@ int PMPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[], const M
  * @brief MPI function MPI_Neighbor_alltoallw_init
  * 
  * @param sendbuf starting address of send buffer
- * @param sendcounts non-negative integer array (of length outdegree) specifying the number of elements to send to each neighbor
+ * @param sendcounts nonnegative integer array (of length outdegree) specifying the number of elements to send to each neighbor
  * @param sdispls integer array (of length outdegree). Entry \mpicode{j} specifies the displacement in bytes (relative to \mpiarg{sendbuf}) from which to take the outgoing data destined for neighbor \mpicode{j}
  * @param sendtypes array of datatypes (of length outdegree). Entry \mpicode{j} specifies the type of data to send to neighbor \mpicode{j}
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length indegree) specifying the number of elements that are received from each neighbor
+ * @param recvcounts nonnegative integer array (of length indegree) specifying the number of elements that are received from each neighbor
  * @param rdispls integer array (of length indegree). Entry \mpicode{i} specifies the displacement in bytes (relative to \mpiarg{recvbuf}) at which to place the incoming data from neighbor \mpicode{i}
  * @param recvtypes array of datatypes (of length indegree). Entry \mpicode{i} specifies the type of data received from neighbor \mpicode{i}
  * @param comm communicator with topology structure
@@ -4182,8 +4182,8 @@ int PMPI_Neighbor_alltoallw(const void *sendbuf, const int sendcounts[], const M
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Neighbor_alltoallw_init(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Neighbor_alltoallw_init(const void *sendbuf, const int sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const int recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Neighbor_alltoallw_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Neighbor_alltoallw_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint sdispls[], const MPI_Datatype sendtypes[], void *recvbuf, const MPI_Count recvcounts[], const MPI_Aint rdispls[], const MPI_Datatype recvtypes[], MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Op_commutative*/
@@ -4257,8 +4257,8 @@ int PMPI_Open_port(MPI_Info info, char *port_name);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pack(const void *inbuf, int incount, MPI_Datatype datatype, void *outbuf, int outsize, int *position, MPI_Comm comm);
-int PMPI_Pack(const void *inbuf, int incount, MPI_Datatype datatype, void *outbuf, int outsize, int *position, MPI_Comm comm);
+int MPI_Pack(const void *inbuf, MPI_Count incount, MPI_Datatype datatype, void *outbuf, MPI_Count outsize, MPI_Count *position, MPI_Comm comm);
+int PMPI_Pack(const void *inbuf, MPI_Count incount, MPI_Datatype datatype, void *outbuf, MPI_Count outsize, MPI_Count *position, MPI_Comm comm);
 
 
 /*MPI_Pack_external*/
@@ -4276,8 +4276,8 @@ int PMPI_Pack(const void *inbuf, int incount, MPI_Datatype datatype, void *outbu
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pack_external(const char datarep[], const void *inbuf, int incount, MPI_Datatype datatype, void *outbuf, MPI_Aint outsize, MPI_Aint *position);
-int PMPI_Pack_external(const char datarep[], const void *inbuf, int incount, MPI_Datatype datatype, void *outbuf, MPI_Aint outsize, MPI_Aint *position);
+int MPI_Pack_external(const char datarep[], const void *inbuf, MPI_Count incount, MPI_Datatype datatype, void *outbuf, MPI_Count outsize, MPI_Count *position);
+int PMPI_Pack_external(const char datarep[], const void *inbuf, MPI_Count incount, MPI_Datatype datatype, void *outbuf, MPI_Count outsize, MPI_Count *position);
 
 
 /*MPI_Pack_external_size*/
@@ -4292,8 +4292,8 @@ int PMPI_Pack_external(const char datarep[], const void *inbuf, int incount, MPI
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pack_external_size(const char datarep[], int incount, MPI_Datatype datatype, MPI_Aint *size);
-int PMPI_Pack_external_size(const char datarep[], int incount, MPI_Datatype datatype, MPI_Aint *size);
+int MPI_Pack_external_size(const char datarep[], MPI_Count incount, MPI_Datatype datatype, MPI_Count *size);
+int PMPI_Pack_external_size(const char datarep[], MPI_Count incount, MPI_Datatype datatype, MPI_Count *size);
 
 
 /*MPI_Pack_size*/
@@ -4308,8 +4308,8 @@ int PMPI_Pack_external_size(const char datarep[], int incount, MPI_Datatype data
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pack_size(int incount, MPI_Datatype datatype, MPI_Comm comm, int *size);
-int PMPI_Pack_size(int incount, MPI_Datatype datatype, MPI_Comm comm, int *size);
+int MPI_Pack_size(MPI_Count incount, MPI_Datatype datatype, MPI_Comm comm, MPI_Count *size);
+int PMPI_Pack_size(MPI_Count incount, MPI_Datatype datatype, MPI_Comm comm, MPI_Count *size);
 
 
 /*MPI_Parrived*/
@@ -4319,12 +4319,12 @@ int PMPI_Pack_size(int incount, MPI_Datatype datatype, MPI_Comm comm, int *size)
  * 
  * @param request partitioned communication request
  * @param partition partition to be tested
- * @param flag \constskip{true} if operation completed on the specified partition, \constskip{false} if not
+ * @param flag \mpicode{true} if operation completed on the specified partition, \mpicode{false} if not
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Parrived(MPI_Request *request, ERR partition, int *flag);
-int PMPI_Parrived(MPI_Request *request, ERR partition, int *flag);
+int MPI_Parrived(MPI_Request request, int partition, int *flag);
+int PMPI_Parrived(MPI_Request request, int partition, int *flag);
 
 
 /*MPI_Pcontrol*/
@@ -4351,8 +4351,8 @@ int PMPI_Pcontrol(const int level, ... );
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pready(ERR partition, MPI_Request *request);
-int PMPI_Pready(ERR partition, MPI_Request *request);
+int MPI_Pready(int partition, MPI_Request request);
+int PMPI_Pready(int partition, MPI_Request request);
 
 
 /*MPI_Pready_list*/
@@ -4366,8 +4366,8 @@ int PMPI_Pready(ERR partition, MPI_Request *request);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pready_list(int length, ERR array_of_partitions[], MPI_Request *request);
-int PMPI_Pready_list(int length, ERR array_of_partitions[], MPI_Request *request);
+int MPI_Pready_list(int length, const int array_of_partitions[], MPI_Request request);
+int PMPI_Pready_list(int length, const int array_of_partitions[], MPI_Request request);
 
 
 /*MPI_Pready_range*/
@@ -4375,14 +4375,14 @@ int PMPI_Pready_list(int length, ERR array_of_partitions[], MPI_Request *request
 /**
  * @brief MPI function MPI_Pready_range
  * 
- * @param partition_low partition to mark lowest partition ready for transfer
- * @param partition_high partition to mark highest partition ready for transfer
+ * @param partition_low lowest partition ready for transfer
+ * @param partition_high highest partition ready for transfer
  * @param request partitioned communication request
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Pready_range(ERR partition_low, ERR partition_high, MPI_Request *request);
-int PMPI_Pready_range(ERR partition_low, ERR partition_high, MPI_Request *request);
+int MPI_Pready_range(int partition_low, int partition_high, MPI_Request request);
+int PMPI_Pready_range(int partition_low, int partition_high, MPI_Request request);
 
 
 /*MPI_Precv_init*/
@@ -4390,11 +4390,11 @@ int PMPI_Pready_range(ERR partition_low, ERR partition_high, MPI_Request *reques
 /**
  * @brief MPI function MPI_Precv_init
  * 
- * @param buf initial address of recv buffer (choice)
+ * @param buf initial address of recv buffer
  * @param partitions number of partitions
- * @param count number of elements send per partition
+ * @param count number of elements received per partition
  * @param datatype type of each element
- * @param dest rank of destination
+ * @param source rank of source
  * @param tag message tag
  * @param comm communicator
  * @param info info argument
@@ -4402,8 +4402,8 @@ int PMPI_Pready_range(ERR partition_low, ERR partition_high, MPI_Request *reques
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Precv_init(void *buf, ERR partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Precv_init(void *buf, ERR partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Precv_init(void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Precv_init(void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Probe*/
@@ -4411,8 +4411,8 @@ int PMPI_Precv_init(void *buf, ERR partitions, MPI_Count count, MPI_Datatype dat
 /**
  * @brief MPI function MPI_Probe
  * 
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param status 
  *
@@ -4427,9 +4427,9 @@ int PMPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
 /**
  * @brief MPI function MPI_Psend_init
  * 
- * @param buf initial address of send buffer (choice)
+ * @param buf initial address of send buffer
  * @param partitions number of partitions
- * @param count number of elements send per partition
+ * @param count number of elements sent per partition
  * @param datatype type of each element
  * @param dest rank of destination
  * @param tag message tag
@@ -4439,8 +4439,8 @@ int PMPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Psend_init(void *buf, ERR partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Psend_init(void *buf, ERR partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Psend_init(const void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Psend_init(const void *buf, int partitions, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Publish_name*/
@@ -4474,8 +4474,8 @@ int PMPI_Publish_name(const char *service_name, MPI_Info info, const char *port_
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win);
-int PMPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win);
+int MPI_Put(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win);
+int PMPI_Put(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win);
 
 
 /*MPI_Query_thread*/
@@ -4509,8 +4509,8 @@ int PMPI_Query_thread(int *provided);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Raccumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
-int PMPI_Raccumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
+int MPI_Raccumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
+int PMPI_Raccumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
 
 
 /*MPI_Recv*/
@@ -4521,15 +4521,15 @@ int PMPI_Raccumulate(const void *origin_addr, int origin_count, MPI_Datatype ori
  * @param buf initial address of receive buffer
  * @param count number of elements in receive buffer
  * @param datatype datatype of each receive buffer element
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param status 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
-int PMPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
+int MPI_Recv(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
+int PMPI_Recv(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status);
 
 
 /*MPI_Recv_init*/
@@ -4540,15 +4540,15 @@ int PMPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, 
  * @param buf initial address of receive buffer
  * @param count number of elements received
  * @param datatype type of each element
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param tag message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param tag message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param request 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Recv_init(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Recv_init(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Recv_init(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Recv_init(void *buf, MPI_Count count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Reduce*/
@@ -4559,15 +4559,15 @@ int PMPI_Recv_init(void *buf, int count, MPI_Datatype datatype, int source, int 
  * @param sendbuf address of send buffer
  * @param recvbuf address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op reduce operation
  * @param root rank of root process
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
-int PMPI_Reduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
+int MPI_Reduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
+int PMPI_Reduce(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
 
 
 /*MPI_Reduce_init*/
@@ -4578,7 +4578,7 @@ int PMPI_Reduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype data
  * @param sendbuf address of send buffer
  * @param recvbuf address of receive buffer
  * @param count number of elements in send buffer
- * @param datatype data type of elements of send buffer
+ * @param datatype datatype of elements of send buffer
  * @param op reduce operation
  * @param root rank of root process
  * @param comm communicator
@@ -4587,8 +4587,8 @@ int PMPI_Reduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype data
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Reduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Reduce_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Reduce_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Reduce_local*/
@@ -4599,13 +4599,13 @@ int PMPI_Reduce_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype
  * @param inbuf input buffer
  * @param inoutbuf combined input and output buffer
  * @param count number of elements in \mpiarg{inbuf} and \mpiarg{inoutbuf} buffers
- * @param datatype data type of elements of \mpiarg{inbuf} and \mpiarg{inoutbuf} buffers
+ * @param datatype datatype of elements of \mpiarg{inbuf} and \mpiarg{inoutbuf} buffers
  * @param op operation
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_local(const void *inbuf, void *inoutbuf, int count, MPI_Datatype datatype, MPI_Op op);
-int PMPI_Reduce_local(const void *inbuf, void *inoutbuf, int count, MPI_Datatype datatype, MPI_Op op);
+int MPI_Reduce_local(const void *inbuf, void *inoutbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op);
+int PMPI_Reduce_local(const void *inbuf, void *inoutbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op);
 
 
 /*MPI_Reduce_scatter*/
@@ -4615,15 +4615,15 @@ int PMPI_Reduce_local(const void *inbuf, void *inoutbuf, int count, MPI_Datatype
  * 
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array (of length group size) specifying the number of elements of the result distributed to each process.
- * @param datatype data type of elements of send and receive buffers
+ * @param recvcounts nonnegative integer array (of length group size) specifying the number of elements of the result distributed to each process.
+ * @param datatype datatype of elements of send and receive buffers
  * @param op operation
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-int PMPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int PMPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
 
 
 /*MPI_Reduce_scatter_block*/
@@ -4634,14 +4634,14 @@ int PMPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int recvcounts
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param recvcount element count per block
- * @param datatype data type of elements of send and receive buffers
+ * @param datatype datatype of elements of send and receive buffers
  * @param op operation
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-int PMPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int MPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int PMPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
 
 
 /*MPI_Reduce_scatter_block_init*/
@@ -4652,7 +4652,7 @@ int PMPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount,
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param recvcount element count per block
- * @param datatype data type of elements of send and receive buffers
+ * @param datatype datatype of elements of send and receive buffers
  * @param op operation
  * @param comm communicator
  * @param info info argument
@@ -4660,8 +4660,8 @@ int PMPI_Reduce_scatter_block(const void *sendbuf, void *recvbuf, int recvcount,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, int recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, MPI_Count recvcount, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Reduce_scatter_init*/
@@ -4671,8 +4671,8 @@ int PMPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, int recvc
  * 
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
- * @param recvcounts non-negative integer array specifying the number of elements in result distributed to each process. This array must be identical on all calling processes.
- * @param datatype data type of elements of input buffer
+ * @param recvcounts nonnegative integer array specifying the number of elements in result distributed to each process. This array must be identical on all calling processes.
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm communicator
  * @param info info argument
@@ -4680,8 +4680,8 @@ int PMPI_Reduce_scatter_block_init(const void *sendbuf, void *recvbuf, int recvc
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const int recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Reduce_scatter_init(const void *sendbuf, void *recvbuf, const MPI_Count recvcounts[], MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Register_datarep*/
@@ -4746,8 +4746,8 @@ int PMPI_Request_get_status(MPI_Request request, int *flag, MPI_Status *status);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Rget(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
-int PMPI_Rget(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
+int MPI_Rget(void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
+int PMPI_Rget(void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
 
 
 /*MPI_Rget_accumulate*/
@@ -4771,8 +4771,8 @@ int PMPI_Rget(void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Rget_accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, void *result_addr, int result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
-int PMPI_Rget_accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, void *result_addr, int result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
+int MPI_Rget_accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, void *result_addr, MPI_Count result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
+int PMPI_Rget_accumulate(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, void *result_addr, MPI_Count result_count, MPI_Datatype result_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Op op, MPI_Win win, MPI_Request *request);
 
 
 /*MPI_Rput*/
@@ -4792,8 +4792,8 @@ int PMPI_Rget_accumulate(const void *origin_addr, int origin_count, MPI_Datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Rput(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
-int PMPI_Rput(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
+int MPI_Rput(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
+int PMPI_Rput(const void *origin_addr, MPI_Count origin_count, MPI_Datatype origin_datatype, int target_rank, MPI_Aint target_disp, MPI_Count target_count, MPI_Datatype target_datatype, MPI_Win win, MPI_Request *request);
 
 
 /*MPI_Rsend*/
@@ -4810,8 +4810,8 @@ int PMPI_Rput(const void *origin_addr, int origin_count, MPI_Datatype origin_dat
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Rsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
-int PMPI_Rsend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int MPI_Rsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int PMPI_Rsend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 
 
 /*MPI_Rsend_init*/
@@ -4829,8 +4829,8 @@ int PMPI_Rsend(const void *buf, int count, MPI_Datatype datatype, int dest, int 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Rsend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Rsend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Rsend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Rsend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Scan*/
@@ -4841,14 +4841,14 @@ int PMPI_Rsend_init(const void *buf, int count, MPI_Datatype datatype, int dest,
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-int PMPI_Scan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int MPI_Scan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+int PMPI_Scan(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
 
 
 /*MPI_Scan_init*/
@@ -4859,7 +4859,7 @@ int PMPI_Scan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype dataty
  * @param sendbuf starting address of send buffer
  * @param recvbuf starting address of receive buffer
  * @param count number of elements in input buffer
- * @param datatype data type of elements of input buffer
+ * @param datatype datatype of elements of input buffer
  * @param op operation
  * @param comm communicator
  * @param info info argument
@@ -4867,8 +4867,8 @@ int PMPI_Scan(const void *sendbuf, void *recvbuf, int count, MPI_Datatype dataty
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scan_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Scan_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Scan_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Scan_init(const void *sendbuf, void *recvbuf, MPI_Count count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Scatter*/
@@ -4878,17 +4878,17 @@ int PMPI_Scan_init(const void *sendbuf, void *recvbuf, int count, MPI_Datatype d
  * 
  * @param sendbuf address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
-int PMPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int MPI_Scatter(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int PMPI_Scatter(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
 
 
 /*MPI_Scatter_init*/
@@ -4898,10 +4898,10 @@ int PMPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void
  * 
  * @param sendbuf address of send buffer
  * @param sendcount number of elements sent to each process
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  * @param info info argument
@@ -4909,8 +4909,8 @@ int PMPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scatter_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Scatter_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Scatter_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Scatter_init(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Scatterv*/
@@ -4919,19 +4919,19 @@ int PMPI_Scatter_init(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
  * @brief MPI function MPI_Scatterv
  * 
  * @param sendbuf address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data to process \mpicode{i}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scatterv(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
-int PMPI_Scatterv(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int MPI_Scatterv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
+int PMPI_Scatterv(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm);
 
 
 /*MPI_Scatterv_init*/
@@ -4940,12 +4940,12 @@ int PMPI_Scatterv(const void *sendbuf, const int sendcounts[], const int displs[
  * @brief MPI function MPI_Scatterv_init
  * 
  * @param sendbuf address of send buffer
- * @param sendcounts non-negative integer array (of length group size) specifying the number of elements to send to each rank
+ * @param sendcounts nonnegative integer array (of length group size) specifying the number of elements to send to each rank
  * @param displs integer array (of length group size). Entry \mpicode{i} specifies the displacement (relative to \mpiarg{sendbuf}) from which to take the outgoing data to process \mpicode{i}
- * @param sendtype data type of send buffer elements
+ * @param sendtype datatype of send buffer elements
  * @param recvbuf address of receive buffer
  * @param recvcount number of elements in receive buffer
- * @param recvtype data type of receive buffer elements
+ * @param recvtype datatype of receive buffer elements
  * @param root rank of sending process
  * @param comm communicator
  * @param info info argument
@@ -4953,8 +4953,8 @@ int PMPI_Scatterv(const void *sendbuf, const int sendcounts[], const int displs[
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Scatterv_init(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
-int PMPI_Scatterv_init(const void *sendbuf, const int sendcounts[], const int displs[], MPI_Datatype sendtype, void *recvbuf, int recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int MPI_Scatterv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
+int PMPI_Scatterv_init(const void *sendbuf, const MPI_Count sendcounts[], const MPI_Aint displs[], MPI_Datatype sendtype, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int root, MPI_Comm comm, MPI_Info info, MPI_Request *request);
 
 
 /*MPI_Send*/
@@ -4971,8 +4971,8 @@ int PMPI_Scatterv_init(const void *sendbuf, const int sendcounts[], const int di
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
-int PMPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int MPI_Send(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int PMPI_Send(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 
 
 /*MPI_Send_init*/
@@ -4990,8 +4990,8 @@ int PMPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int t
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Send_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Send_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Send_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Send_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Sendrecv*/
@@ -5007,15 +5007,15 @@ int PMPI_Send_init(const void *buf, int count, MPI_Datatype datatype, int dest, 
  * @param recvbuf initial address of receive buffer
  * @param recvcount number of elements in receive buffer
  * @param recvtype type of elements receive buffer element
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param recvtag receive tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param recvtag receive tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param status 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
-int PMPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
+int MPI_Sendrecv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
+int PMPI_Sendrecv(const void *sendbuf, MPI_Count sendcount, MPI_Datatype sendtype, int dest, int sendtag, void *recvbuf, MPI_Count recvcount, MPI_Datatype recvtype, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
 
 
 /*MPI_Sendrecv_replace*/
@@ -5028,15 +5028,15 @@ int PMPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int
  * @param datatype type of elements in send and receive buffer
  * @param dest rank of destination
  * @param sendtag send message tag
- * @param source rank of source or \const{MPI_ANY_SOURCE}
- * @param recvtag receive message tag or \const{MPI_ANY_TAG}
+ * @param source rank of source or \mpiconst{MPI_ANY_SOURCE}
+ * @param recvtag receive message tag or \mpiconst{MPI_ANY_TAG}
  * @param comm 
  * @param status 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Sendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
-int PMPI_Sendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
+int MPI_Sendrecv_replace(void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
+int PMPI_Sendrecv_replace(void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int sendtag, int source, int recvtag, MPI_Comm comm, MPI_Status *status);
 
 
 /*MPI_Session_call_errhandler*/
@@ -5049,8 +5049,8 @@ int PMPI_Sendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_call_errhandler(ERR session, int errorcode);
-int PMPI_Session_call_errhandler(ERR session, int errorcode);
+int MPI_Session_call_errhandler(MPI_Session session, int errorcode);
+int PMPI_Session_call_errhandler(MPI_Session session, int errorcode);
 
 
 /*MPI_Session_create_errhandler*/
@@ -5076,8 +5076,8 @@ int PMPI_Session_create_errhandler(MPI_Session_errhandler_function *session_errh
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_finalize(ERR *session);
-int PMPI_Session_finalize(ERR *session);
+int MPI_Session_finalize(MPI_Session *session);
+int PMPI_Session_finalize(MPI_Session *session);
 
 
 /*MPI_Session_get_errhandler*/
@@ -5085,13 +5085,13 @@ int PMPI_Session_finalize(ERR *session);
 /**
  * @brief MPI function MPI_Session_get_errhandler
  * 
- * @param session 
+ * @param session session
  * @param errhandler error handler currently associated with session
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_get_errhandler(ERR session, MPI_Errhandler *errhandler);
-int PMPI_Session_get_errhandler(ERR session, MPI_Errhandler *errhandler);
+int MPI_Session_get_errhandler(MPI_Session session, MPI_Errhandler *errhandler);
+int PMPI_Session_get_errhandler(MPI_Session session, MPI_Errhandler *errhandler);
 
 
 /*MPI_Session_get_info*/
@@ -5104,8 +5104,8 @@ int PMPI_Session_get_errhandler(ERR session, MPI_Errhandler *errhandler);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_get_info(ERR session, MPI_Info *info_used);
-int PMPI_Session_get_info(ERR session, MPI_Info *info_used);
+int MPI_Session_get_info(MPI_Session session, MPI_Info *info_used);
+int PMPI_Session_get_info(MPI_Session session, MPI_Info *info_used);
 
 
 /*MPI_Session_get_nth_pset*/
@@ -5121,8 +5121,8 @@ int PMPI_Session_get_info(ERR session, MPI_Info *info_used);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_get_nth_pset(ERR session, MPI_Info info, int n, int *pset_len, char *pset_name);
-int PMPI_Session_get_nth_pset(ERR session, MPI_Info info, int n, int *pset_len, char *pset_name);
+int MPI_Session_get_nth_pset(MPI_Session session, MPI_Info info, int n, int *pset_len, char *pset_name);
+int PMPI_Session_get_nth_pset(MPI_Session session, MPI_Info info, int n, int *pset_len, char *pset_name);
 
 
 /*MPI_Session_get_num_psets*/
@@ -5136,8 +5136,8 @@ int PMPI_Session_get_nth_pset(ERR session, MPI_Info info, int n, int *pset_len, 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_get_num_psets(ERR session, MPI_Info info, int *npset_names);
-int PMPI_Session_get_num_psets(ERR session, MPI_Info info, int *npset_names);
+int MPI_Session_get_num_psets(MPI_Session session, MPI_Info info, int *npset_names);
+int PMPI_Session_get_num_psets(MPI_Session session, MPI_Info info, int *npset_names);
 
 
 /*MPI_Session_get_pset_info*/
@@ -5151,8 +5151,8 @@ int PMPI_Session_get_num_psets(ERR session, MPI_Info info, int *npset_names);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_get_pset_info(ERR session, const char *pset_name, MPI_Info *info);
-int PMPI_Session_get_pset_info(ERR session, const char *pset_name, MPI_Info *info);
+int MPI_Session_get_pset_info(MPI_Session session, const char *pset_name, MPI_Info *info);
+int PMPI_Session_get_pset_info(MPI_Session session, const char *pset_name, MPI_Info *info);
 
 
 /*MPI_Session_init*/
@@ -5166,8 +5166,8 @@ int PMPI_Session_get_pset_info(ERR session, const char *pset_name, MPI_Info *inf
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, ERR *session);
-int PMPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, ERR *session);
+int MPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, MPI_Session *session);
+int PMPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, MPI_Session *session);
 
 
 /*MPI_Session_set_errhandler*/
@@ -5175,13 +5175,13 @@ int PMPI_Session_init(MPI_Info info, MPI_Errhandler errhandler, ERR *session);
 /**
  * @brief MPI function MPI_Session_set_errhandler
  * 
- * @param session 
+ * @param session session
  * @param errhandler new error handler for session
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Session_set_errhandler(ERR session, MPI_Errhandler errhandler);
-int PMPI_Session_set_errhandler(ERR session, MPI_Errhandler errhandler);
+int MPI_Session_set_errhandler(MPI_Session session, MPI_Errhandler errhandler);
+int PMPI_Session_set_errhandler(MPI_Session session, MPI_Errhandler errhandler);
 
 
 /*MPI_Ssend*/
@@ -5198,8 +5198,8 @@ int PMPI_Session_set_errhandler(ERR session, MPI_Errhandler errhandler);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
-int PMPI_Ssend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int MPI_Ssend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
+int PMPI_Ssend(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 
 
 /*MPI_Ssend_init*/
@@ -5217,8 +5217,8 @@ int PMPI_Ssend(const void *buf, int count, MPI_Datatype datatype, int dest, int 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Ssend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int PMPI_Ssend_init(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Ssend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int PMPI_Ssend_init(const void *buf, MPI_Count count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request *request);
 
 
 /*MPI_Start*/
@@ -5273,8 +5273,8 @@ int PMPI_Status_set_cancelled(MPI_Status *status, int flag);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, int count);
-int PMPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, int count);
+int MPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, MPI_Count count);
+int PMPI_Status_set_elements(MPI_Status *status, MPI_Datatype datatype, MPI_Count count);
 
 
 /*MPI_Status_set_elements_x*/
@@ -5297,12 +5297,12 @@ int PMPI_Status_set_elements_x(MPI_Status *status, MPI_Datatype datatype, MPI_Co
 /**
  * @brief MPI function MPI_T_category_changed
  * 
- * @param stamp a virtual time stamp to indicate the last change to the categories
+ * @param update_number update number
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_category_changed(int *stamp);
-int PMPI_T_category_changed(int *stamp);
+int MPI_T_category_changed(int *update_number);
+int PMPI_T_category_changed(int *update_number);
 
 
 /*MPI_T_category_get_categories*/
@@ -5310,7 +5310,7 @@ int PMPI_T_category_changed(int *stamp);
 /**
  * @brief MPI function MPI_T_category_get_categories
  * 
- * @param cat_index index of the category to be queried, in the range $0$ and $\mpiarg{num_cat}-1$
+ * @param cat_index index of the category to be queried, in the range from $0$ to $\mpiarg{num_cat}-1$
  * @param len the length of the indices array
  * @param indices an integer array of size \mpiarg{len}, indicating category indices
  *
@@ -5325,7 +5325,7 @@ int PMPI_T_category_get_categories(int cat_index, int len, int indices[]);
 /**
  * @brief MPI function MPI_T_category_get_cvars
  * 
- * @param cat_index index of the category to be queried, in the range $0$ and $\mpiarg{num_cat}-1$
+ * @param cat_index index of the category to be queried, in the range from $0$ to $\mpiarg{num_cat}-1$
  * @param len the length of the indices array
  * @param indices an integer array of size \mpiarg{len}, indicating control variable indices
  *
@@ -5340,7 +5340,7 @@ int PMPI_T_category_get_cvars(int cat_index, int len, int indices[]);
 /**
  * @brief MPI function MPI_T_category_get_events
  * 
- * @param cat_index index of the category to be queried, in the range $0$ and $\mpiarg{num_cat}-1$
+ * @param cat_index index of the category to be queried, in the range from $0$ to $\mpiarg{num_cat}-1$
  * @param len the length of the indices array
  * @param indices an integer array of size \mpiarg{len}, indicating event type indices
  *
@@ -5407,8 +5407,8 @@ int PMPI_T_category_get_num(int *num_cat);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_category_get_num_events(int cat_index, ERR *num_events);
-int PMPI_T_category_get_num_events(int cat_index, ERR *num_events);
+int MPI_T_category_get_num_events(int cat_index, int *num_events);
+int PMPI_T_category_get_num_events(int cat_index, int *num_events);
 
 
 /*MPI_T_category_get_pvars*/
@@ -5416,7 +5416,7 @@ int PMPI_T_category_get_num_events(int cat_index, ERR *num_events);
 /**
  * @brief MPI function MPI_T_category_get_pvars
  * 
- * @param cat_index index of the category to be queried, in the range $0$ and $\mpiarg{num_cat}-1$
+ * @param cat_index index of the category to be queried, in the range from $0$ to $\mpiarg{num_cat}-1$
  * @param len the length of the indices array
  * @param indices an integer array of size \mpiarg{len}, indicating performance variable indices
  *
@@ -5576,8 +5576,8 @@ int PMPI_T_enum_get_item(MPI_T_enum enumtype, int index, int *value, char *name,
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_callback_get_info(ERR event_registration, ERR cb_safety, MPI_Info *info_used);
-int PMPI_T_event_callback_get_info(ERR event_registration, ERR cb_safety, MPI_Info *info_used);
+int MPI_T_event_callback_get_info(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info *info_used);
+int PMPI_T_event_callback_get_info(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info *info_used);
 
 
 /*MPI_T_event_callback_set_info*/
@@ -5591,8 +5591,8 @@ int PMPI_T_event_callback_get_info(ERR event_registration, ERR cb_safety, MPI_In
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_callback_set_info(ERR event_registration, ERR cb_safety, MPI_Info info);
-int PMPI_T_event_callback_set_info(ERR event_registration, ERR cb_safety, MPI_Info info);
+int MPI_T_event_callback_set_info(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info info);
+int PMPI_T_event_callback_set_info(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info info);
 
 
 /*MPI_T_event_copy*/
@@ -5605,8 +5605,8 @@ int PMPI_T_event_callback_set_info(ERR event_registration, ERR cb_safety, MPI_In
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_copy(ERR event_instance, void *buffer);
-int PMPI_T_event_copy(ERR event_instance, void *buffer);
+int MPI_T_event_copy(MPI_T_event_instance event_instance, void *buffer);
+int PMPI_T_event_copy(MPI_T_event_instance event_instance, void *buffer);
 
 
 /*MPI_T_event_get_index*/
@@ -5619,8 +5619,8 @@ int PMPI_T_event_copy(ERR event_instance, void *buffer);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_get_index(const char *name, ERR *event_index);
-int PMPI_T_event_get_index(const char *name, ERR *event_index);
+int MPI_T_event_get_index(const char *name, int *event_index);
+int PMPI_T_event_get_index(const char *name, int *event_index);
 
 
 /*MPI_T_event_get_info*/
@@ -5643,8 +5643,8 @@ int PMPI_T_event_get_index(const char *name, ERR *event_index);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_get_info(ERR event_index, char *name, int *name_len, int *verbosity, MPI_Datatype array_of_datatypes[], ERR array_of_displacements[], int *num_elements, MPI_T_enum *enumtype, MPI_Info *info, char *desc, int *desc_len, int *bind);
-int PMPI_T_event_get_info(ERR event_index, char *name, int *name_len, int *verbosity, MPI_Datatype array_of_datatypes[], ERR array_of_displacements[], int *num_elements, MPI_T_enum *enumtype, MPI_Info *info, char *desc, int *desc_len, int *bind);
+int MPI_T_event_get_info(int event_index, char *name, int *name_len, int *verbosity, MPI_Datatype array_of_datatypes[], MPI_Aint array_of_displacements[], int *num_elements, MPI_T_enum *enumtype, MPI_Info *info, char *desc, int *desc_len, int *bind);
+int PMPI_T_event_get_info(int event_index, char *name, int *name_len, int *verbosity, MPI_Datatype array_of_datatypes[], MPI_Aint array_of_displacements[], int *num_elements, MPI_T_enum *enumtype, MPI_Info *info, char *desc, int *desc_len, int *bind);
 
 
 /*MPI_T_event_get_num*/
@@ -5656,8 +5656,8 @@ int PMPI_T_event_get_info(ERR event_index, char *name, int *name_len, int *verbo
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_get_num(ERR *num_events);
-int PMPI_T_event_get_num(ERR *num_events);
+int MPI_T_event_get_num(int *num_events);
+int PMPI_T_event_get_num(int *num_events);
 
 
 /*MPI_T_event_get_source*/
@@ -5670,8 +5670,8 @@ int PMPI_T_event_get_num(ERR *num_events);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_get_source(ERR event_instance, ERR *source_index);
-int PMPI_T_event_get_source(ERR event_instance, ERR *source_index);
+int MPI_T_event_get_source(MPI_T_event_instance event_instance, int *source_index);
+int PMPI_T_event_get_source(MPI_T_event_instance event_instance, int *source_index);
 
 
 /*MPI_T_event_get_timestamp*/
@@ -5684,8 +5684,8 @@ int PMPI_T_event_get_source(ERR event_instance, ERR *source_index);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_get_timestamp(ERR event_instance, ERR *event_timestamp);
-int PMPI_T_event_get_timestamp(ERR event_instance, ERR *event_timestamp);
+int MPI_T_event_get_timestamp(MPI_T_event_instance event_instance, MPI_Count *event_timestamp);
+int PMPI_T_event_get_timestamp(MPI_T_event_instance event_instance, MPI_Count *event_timestamp);
 
 
 /*MPI_T_event_handle_alloc*/
@@ -5700,8 +5700,8 @@ int PMPI_T_event_get_timestamp(ERR event_instance, ERR *event_timestamp);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_handle_alloc(ERR event_index, void *obj_handle, MPI_Info info, ERR *event_registration);
-int PMPI_T_event_handle_alloc(ERR event_index, void *obj_handle, MPI_Info info, ERR *event_registration);
+int MPI_T_event_handle_alloc(int event_index, void *obj_handle, MPI_Info info, MPI_T_event_registration *event_registration);
+int PMPI_T_event_handle_alloc(int event_index, void *obj_handle, MPI_Info info, MPI_T_event_registration *event_registration);
 
 
 /*MPI_T_event_handle_free*/
@@ -5715,8 +5715,8 @@ int PMPI_T_event_handle_alloc(ERR event_index, void *obj_handle, MPI_Info info, 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_handle_free(ERR event_registration, void *user_data, ERR free_cb_function);
-int PMPI_T_event_handle_free(ERR event_registration, void *user_data, ERR free_cb_function);
+int MPI_T_event_handle_free(MPI_T_event_registration event_registration, void *user_data, MPI_T_event_free_cb_function free_cb_function);
+int PMPI_T_event_handle_free(MPI_T_event_registration event_registration, void *user_data, MPI_T_event_free_cb_function free_cb_function);
 
 
 /*MPI_T_event_handle_get_info*/
@@ -5729,8 +5729,8 @@ int PMPI_T_event_handle_free(ERR event_registration, void *user_data, ERR free_c
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_handle_get_info(ERR event_registration, MPI_Info *info_used);
-int PMPI_T_event_handle_get_info(ERR event_registration, MPI_Info *info_used);
+int MPI_T_event_handle_get_info(MPI_T_event_registration event_registration, MPI_Info *info_used);
+int PMPI_T_event_handle_get_info(MPI_T_event_registration event_registration, MPI_Info *info_used);
 
 
 /*MPI_T_event_handle_set_info*/
@@ -5743,8 +5743,8 @@ int PMPI_T_event_handle_get_info(ERR event_registration, MPI_Info *info_used);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_handle_set_info(ERR event_registration, MPI_Info info);
-int PMPI_T_event_handle_set_info(ERR event_registration, MPI_Info info);
+int MPI_T_event_handle_set_info(MPI_T_event_registration event_registration, MPI_Info info);
+int PMPI_T_event_handle_set_info(MPI_T_event_registration event_registration, MPI_Info info);
 
 
 /*MPI_T_event_read*/
@@ -5758,8 +5758,8 @@ int PMPI_T_event_handle_set_info(ERR event_registration, MPI_Info info);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_read(ERR event_instance, int element_index, void *buffer);
-int PMPI_T_event_read(ERR event_instance, int element_index, void *buffer);
+int MPI_T_event_read(MPI_T_event_instance event_instance, int element_index, void *buffer);
+int PMPI_T_event_read(MPI_T_event_instance event_instance, int element_index, void *buffer);
 
 
 /*MPI_T_event_register_callback*/
@@ -5775,8 +5775,8 @@ int PMPI_T_event_read(ERR event_instance, int element_index, void *buffer);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_register_callback(ERR event_registration, ERR cb_safety, MPI_Info info, void *user_data, ERR event_cb_function);
-int PMPI_T_event_register_callback(ERR event_registration, ERR cb_safety, MPI_Info info, void *user_data, ERR event_cb_function);
+int MPI_T_event_register_callback(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info info, void *user_data, MPI_T_event_cb_function event_cb_function);
+int PMPI_T_event_register_callback(MPI_T_event_registration event_registration, MPI_T_cb_safety cb_safety, MPI_Info info, void *user_data, MPI_T_event_cb_function event_cb_function);
 
 
 /*MPI_T_event_set_dropped_handler*/
@@ -5789,8 +5789,8 @@ int PMPI_T_event_register_callback(ERR event_registration, ERR cb_safety, MPI_In
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_event_set_dropped_handler(ERR event_registration, ERR dropped_cb_function);
-int PMPI_T_event_set_dropped_handler(ERR event_registration, ERR dropped_cb_function);
+int MPI_T_event_set_dropped_handler(MPI_T_event_registration event_registration, MPI_T_event_dropped_cb_function dropped_cb_function);
+int PMPI_T_event_set_dropped_handler(MPI_T_event_registration event_registration, MPI_T_event_dropped_cb_function dropped_cb_function);
 
 
 /*MPI_T_finalize*/
@@ -5878,7 +5878,7 @@ int PMPI_T_pvar_get_num(int *num_pvar);
 /**
  * @brief MPI function MPI_T_pvar_handle_alloc
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param pvar_index index of performance variable for which handle is to be allocated
  * @param obj_handle reference to a handle of the \mpi/ object to which this variable is supposed to be bound
  * @param handle allocated handle
@@ -5886,8 +5886,8 @@ int PMPI_T_pvar_get_num(int *num_pvar);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_handle_alloc(MPI_T_pvar_session session, int pvar_index, void *obj_handle, MPI_T_pvar_handle *handle, int *count);
-int PMPI_T_pvar_handle_alloc(MPI_T_pvar_session session, int pvar_index, void *obj_handle, MPI_T_pvar_handle *handle, int *count);
+int MPI_T_pvar_handle_alloc(MPI_T_pvar_session pe_session, int pvar_index, void *obj_handle, MPI_T_pvar_handle *handle, int *count);
+int PMPI_T_pvar_handle_alloc(MPI_T_pvar_session pe_session, int pvar_index, void *obj_handle, MPI_T_pvar_handle *handle, int *count);
 
 
 /*MPI_T_pvar_handle_free*/
@@ -5895,13 +5895,13 @@ int PMPI_T_pvar_handle_alloc(MPI_T_pvar_session session, int pvar_index, void *o
 /**
  * @brief MPI function MPI_T_pvar_handle_free
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle to be freed
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_handle_free(MPI_T_pvar_session session, MPI_T_pvar_handle *handle);
-int PMPI_T_pvar_handle_free(MPI_T_pvar_session session, MPI_T_pvar_handle *handle);
+int MPI_T_pvar_handle_free(MPI_T_pvar_session pe_session, MPI_T_pvar_handle *handle);
+int PMPI_T_pvar_handle_free(MPI_T_pvar_session pe_session, MPI_T_pvar_handle *handle);
 
 
 /*MPI_T_pvar_read*/
@@ -5909,14 +5909,14 @@ int PMPI_T_pvar_handle_free(MPI_T_pvar_session session, MPI_T_pvar_handle *handl
 /**
  * @brief MPI function MPI_T_pvar_read
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  * @param buf initial address of storage location for variable value
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_read(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void *buf);
-int PMPI_T_pvar_read(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void *buf);
+int MPI_T_pvar_read(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, void *buf);
+int PMPI_T_pvar_read(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, void *buf);
 
 
 /*MPI_T_pvar_readreset*/
@@ -5924,14 +5924,14 @@ int PMPI_T_pvar_read(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void 
 /**
  * @brief MPI function MPI_T_pvar_readreset
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  * @param buf initial address of storage location for variable value
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_readreset(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void *buf);
-int PMPI_T_pvar_readreset(MPI_T_pvar_session session, MPI_T_pvar_handle handle, void *buf);
+int MPI_T_pvar_readreset(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, void *buf);
+int PMPI_T_pvar_readreset(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, void *buf);
 
 
 /*MPI_T_pvar_reset*/
@@ -5939,13 +5939,13 @@ int PMPI_T_pvar_readreset(MPI_T_pvar_session session, MPI_T_pvar_handle handle, 
 /**
  * @brief MPI function MPI_T_pvar_reset
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_reset(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
-int PMPI_T_pvar_reset(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
+int MPI_T_pvar_reset(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
+int PMPI_T_pvar_reset(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
 
 
 /*MPI_T_pvar_session_create*/
@@ -5953,12 +5953,12 @@ int PMPI_T_pvar_reset(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
 /**
  * @brief MPI function MPI_T_pvar_session_create
  * 
- * @param session identifier of performance session
+ * @param pe_session identifier of performance experiment session
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_session_create(MPI_T_pvar_session *session);
-int PMPI_T_pvar_session_create(MPI_T_pvar_session *session);
+int MPI_T_pvar_session_create(MPI_T_pvar_session *pe_session);
+int PMPI_T_pvar_session_create(MPI_T_pvar_session *pe_session);
 
 
 /*MPI_T_pvar_session_free*/
@@ -5966,12 +5966,12 @@ int PMPI_T_pvar_session_create(MPI_T_pvar_session *session);
 /**
  * @brief MPI function MPI_T_pvar_session_free
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_session_free(MPI_T_pvar_session *session);
-int PMPI_T_pvar_session_free(MPI_T_pvar_session *session);
+int MPI_T_pvar_session_free(MPI_T_pvar_session *pe_session);
+int PMPI_T_pvar_session_free(MPI_T_pvar_session *pe_session);
 
 
 /*MPI_T_pvar_start*/
@@ -5979,13 +5979,13 @@ int PMPI_T_pvar_session_free(MPI_T_pvar_session *session);
 /**
  * @brief MPI function MPI_T_pvar_start
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_start(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
-int PMPI_T_pvar_start(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
+int MPI_T_pvar_start(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
+int PMPI_T_pvar_start(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
 
 
 /*MPI_T_pvar_stop*/
@@ -5993,13 +5993,13 @@ int PMPI_T_pvar_start(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
 /**
  * @brief MPI function MPI_T_pvar_stop
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_stop(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
-int PMPI_T_pvar_stop(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
+int MPI_T_pvar_stop(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
+int PMPI_T_pvar_stop(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle);
 
 
 /*MPI_T_pvar_write*/
@@ -6007,14 +6007,14 @@ int PMPI_T_pvar_stop(MPI_T_pvar_session session, MPI_T_pvar_handle handle);
 /**
  * @brief MPI function MPI_T_pvar_write
  * 
- * @param session identifier of performance experiment session
+ * @param pe_session identifier of performance experiment session
  * @param handle handle of a performance variable
  * @param buf initial address of storage location for variable value
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_pvar_write(MPI_T_pvar_session session, MPI_T_pvar_handle handle, const void *buf);
-int PMPI_T_pvar_write(MPI_T_pvar_session session, MPI_T_pvar_handle handle, const void *buf);
+int MPI_T_pvar_write(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, const void *buf);
+int PMPI_T_pvar_write(MPI_T_pvar_session pe_session, MPI_T_pvar_handle handle, const void *buf);
 
 
 /*MPI_T_source_get_info*/
@@ -6034,8 +6034,8 @@ int PMPI_T_pvar_write(MPI_T_pvar_session session, MPI_T_pvar_handle handle, cons
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_source_get_info(ERR source_index, char *name, int *name_len, char *desc, int *desc_len, ERR *ordering, ERR *ticks_per_second, ERR *max_ticks, MPI_Info *info);
-int PMPI_T_source_get_info(ERR source_index, char *name, int *name_len, char *desc, int *desc_len, ERR *ordering, ERR *ticks_per_second, ERR *max_ticks, MPI_Info *info);
+int MPI_T_source_get_info(int source_index, char *name, int *name_len, char *desc, int *desc_len, MPI_T_source_order *ordering, MPI_Count *ticks_per_second, MPI_Count *max_ticks, MPI_Info *info);
+int PMPI_T_source_get_info(int source_index, char *name, int *name_len, char *desc, int *desc_len, MPI_T_source_order *ordering, MPI_Count *ticks_per_second, MPI_Count *max_ticks, MPI_Info *info);
 
 
 /*MPI_T_source_get_num*/
@@ -6047,8 +6047,8 @@ int PMPI_T_source_get_info(ERR source_index, char *name, int *name_len, char *de
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_source_get_num(ERR *num_sources);
-int PMPI_T_source_get_num(ERR *num_sources);
+int MPI_T_source_get_num(int *num_sources);
+int PMPI_T_source_get_num(int *num_sources);
 
 
 /*MPI_T_source_get_timestamp*/
@@ -6061,8 +6061,8 @@ int PMPI_T_source_get_num(ERR *num_sources);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_T_source_get_timestamp(ERR source_index, ERR *timestamp);
-int PMPI_T_source_get_timestamp(ERR source_index, ERR *timestamp);
+int MPI_T_source_get_timestamp(int source_index, MPI_Count *timestamp);
+int PMPI_T_source_get_timestamp(int source_index, MPI_Count *timestamp);
 
 
 /*MPI_Test*/
@@ -6086,7 +6086,7 @@ int PMPI_Test(MPI_Request *request, int *flag, MPI_Status *status);
  * @brief MPI function MPI_Test_cancelled
  * 
  * @param status 
- * @param flag 
+ * @param flag \mpicode{true} if the operation has been cancelled
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -6099,9 +6099,9 @@ int PMPI_Test_cancelled(const MPI_Status *status, int *flag);
 /**
  * @brief MPI function MPI_Testall
  * 
- * @param count lists length
+ * @param count list length
  * @param array_of_requests array of requests
- * @param flag 
+ * @param flag \mpicode{true} if all of the operations are complete
  * @param array_of_statuses array of status objects
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
@@ -6117,7 +6117,7 @@ int PMPI_Testall(int count, MPI_Request array_of_requests[], int *flag, MPI_Stat
  * 
  * @param count list length
  * @param array_of_requests array of requests
- * @param index index of operation that completed or \const{MPI_UNDEFINED} if none completed
+ * @param index index of operation that completed or \mpiconst{MPI_UNDEFINED} if none completed
  * @param flag \mpicode{true} if one of the operations is complete
  * @param status 
  *
@@ -6182,8 +6182,8 @@ int PMPI_Type_commit(MPI_Datatype *datatype);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_contiguous(MPI_Count count, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_contiguous(MPI_Count count, MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_darray*/
@@ -6204,8 +6204,8 @@ int PMPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype)
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_darray(int size, int rank, int ndims, const int array_of_gsizes[], const int array_of_distribs[], const int array_of_dargs[], const int array_of_psizes[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_darray(int size, int rank, int ndims, const int array_of_gsizes[], const int array_of_distribs[], const int array_of_dargs[], const int array_of_psizes[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_darray(int size, int rank, int ndims, const MPI_Count array_of_gsizes[], const int array_of_distribs[], const int array_of_dargs[], const int array_of_psizes[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_darray(int size, int rank, int ndims, const MPI_Count array_of_gsizes[], const int array_of_distribs[], const int array_of_dargs[], const int array_of_psizes[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_f90_complex*/
@@ -6257,7 +6257,7 @@ int PMPI_Type_create_f90_real(int p, int r, MPI_Datatype *newtype);
 /**
  * @brief MPI function MPI_Type_create_hindexed
  * 
- * @param count number of blocks -- also number of entries in \mpiarg{array_of_displacements} and \mpiarg{array_of_blocklengths}
+ * @param count number of blocks---also number of entries in \mpiarg{array_of_displacements} and \mpiarg{array_of_blocklengths}
  * @param array_of_blocklengths number of elements in each block
  * @param array_of_displacements byte displacement of each block
  * @param oldtype old datatype
@@ -6265,8 +6265,8 @@ int PMPI_Type_create_f90_real(int p, int r, MPI_Datatype *newtype);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_hindexed(int count, const int array_of_blocklengths[], const MPI_Aint array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_hindexed(int count, const int array_of_blocklengths[], const MPI_Aint array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_hindexed(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_hindexed(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_hindexed_block*/
@@ -6274,16 +6274,16 @@ int PMPI_Type_create_hindexed(int count, const int array_of_blocklengths[], cons
 /**
  * @brief MPI function MPI_Type_create_hindexed_block
  * 
- * @param count length of array of displacements
- * @param blocklength size of block
+ * @param count number of blocks---also number of entries in \mpiarg{array_of_displacements}
+ * @param blocklength number of elements in each block
  * @param array_of_displacements byte displacement of each block
  * @param oldtype old datatype
  * @param newtype new datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_hindexed_block(int count, int blocklength, const MPI_Aint array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_hindexed_block(int count, int blocklength, const MPI_Aint array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_hindexed_block(MPI_Count count, MPI_Count blocklength, const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_hindexed_block(MPI_Count count, MPI_Count blocklength, const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_hvector*/
@@ -6299,8 +6299,8 @@ int PMPI_Type_create_hindexed_block(int count, int blocklength, const MPI_Aint a
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_hvector(int count, int blocklength, MPI_Aint stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_hvector(int count, int blocklength, MPI_Aint stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_hvector(MPI_Count count, MPI_Count blocklength, MPI_Count stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_hvector(MPI_Count count, MPI_Count blocklength, MPI_Count stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_indexed_block*/
@@ -6308,16 +6308,16 @@ int PMPI_Type_create_hvector(int count, int blocklength, MPI_Aint stride, MPI_Da
 /**
  * @brief MPI function MPI_Type_create_indexed_block
  * 
- * @param count length of array of displacements
- * @param blocklength size of block
- * @param array_of_displacements array of displacements
+ * @param count number of blocks---also number of entries in \mpiarg{array_of_displacements}
+ * @param blocklength number of elements in each block
+ * @param array_of_displacements array of displacements, in multiples of \mpiarg{oldtype}
  * @param oldtype old datatype
  * @param newtype new datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_indexed_block(int count, int blocklength, const int array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_indexed_block(int count, int blocklength, const int array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_indexed_block(MPI_Count count, MPI_Count blocklength, const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_indexed_block(MPI_Count count, MPI_Count blocklength, const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_keyval*/
@@ -6348,8 +6348,8 @@ int PMPI_Type_create_keyval(MPI_Type_copy_attr_function *type_copy_attr_fn, MPI_
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_resized(MPI_Datatype oldtype, MPI_Aint lb, MPI_Aint extent, MPI_Datatype *newtype);
-int PMPI_Type_create_resized(MPI_Datatype oldtype, MPI_Aint lb, MPI_Aint extent, MPI_Datatype *newtype);
+int MPI_Type_create_resized(MPI_Datatype oldtype, MPI_Count lb, MPI_Count extent, MPI_Datatype *newtype);
+int PMPI_Type_create_resized(MPI_Datatype oldtype, MPI_Count lb, MPI_Count extent, MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_struct*/
@@ -6357,16 +6357,16 @@ int PMPI_Type_create_resized(MPI_Datatype oldtype, MPI_Aint lb, MPI_Aint extent,
 /**
  * @brief MPI function MPI_Type_create_struct
  * 
- * @param count number of blocks also number of entries in arrays \mpiarg{array_of_types}, \mpiarg{array_of_displacements}, and \mpiarg{array_of_blocklengths}
+ * @param count number of blocks---also number of entries in arrays \mpiarg{array_of_types}, \mpiarg{array_of_displacements}, and \mpiarg{array_of_blocklengths}
  * @param array_of_blocklengths number of elements in each block
  * @param array_of_displacements byte displacement of each block
- * @param array_of_types types of elements in each block
+ * @param array_of_types type of elements in each block
  * @param newtype new datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_struct(int count, const int array_of_blocklengths[], const MPI_Aint array_of_displacements[], const MPI_Datatype array_of_types[], MPI_Datatype *newtype);
-int PMPI_Type_create_struct(int count, const int array_of_blocklengths[], const MPI_Aint array_of_displacements[], const MPI_Datatype array_of_types[], MPI_Datatype *newtype);
+int MPI_Type_create_struct(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], const MPI_Datatype array_of_types[], MPI_Datatype *newtype);
+int PMPI_Type_create_struct(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], const MPI_Datatype array_of_types[], MPI_Datatype *newtype);
 
 
 /*MPI_Type_create_subarray*/
@@ -6384,8 +6384,8 @@ int PMPI_Type_create_struct(int count, const int array_of_blocklengths[], const 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_create_subarray(int ndims, const int array_of_sizes[], const int array_of_subsizes[], const int array_of_starts[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_create_subarray(int ndims, const int array_of_sizes[], const int array_of_subsizes[], const int array_of_starts[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_create_subarray(int ndims, const MPI_Count array_of_sizes[], const MPI_Count array_of_subsizes[], const MPI_Count array_of_starts[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_create_subarray(int ndims, const MPI_Count array_of_sizes[], const MPI_Count array_of_subsizes[], const MPI_Count array_of_starts[], int order, MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_delete_attr*/
@@ -6463,18 +6463,20 @@ int PMPI_Type_get_attr(MPI_Datatype datatype, int type_keyval, void *attribute_v
 /**
  * @brief MPI function MPI_Type_get_contents
  * 
- * @param datatype datatype to access
+ * @param datatype datatype to decode
  * @param max_integers number of elements in \mpiarg{array_of_integers}
  * @param max_addresses number of elements in \mpiarg{array_of_addresses}
+ * @param max_large_counts number of elements in \mpiarg{array_of_large_counts}
  * @param max_datatypes number of elements in \mpiarg{array_of_datatypes}
  * @param array_of_integers contains integer arguments used in constructing \mpiarg{datatype}
  * @param array_of_addresses contains address arguments used in constructing \mpiarg{datatype}
+ * @param array_of_large_counts contains large count arguments used in constructing \mpiarg{datatype}
  * @param array_of_datatypes contains datatype arguments used in constructing \mpiarg{datatype}
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_get_contents(MPI_Datatype datatype, int max_integers, int max_addresses, int max_datatypes, int array_of_integers[], MPI_Aint array_of_addresses[], MPI_Datatype array_of_datatypes[]);
-int PMPI_Type_get_contents(MPI_Datatype datatype, int max_integers, int max_addresses, int max_datatypes, int array_of_integers[], MPI_Aint array_of_addresses[], MPI_Datatype array_of_datatypes[]);
+int MPI_Type_get_contents(MPI_Datatype datatype, MPI_Count max_integers, MPI_Count max_addresses, MPI_Count max_large_counts, MPI_Count max_datatypes, int array_of_integers[], MPI_Aint array_of_addresses[], MPI_Count array_of_large_counts[], MPI_Datatype array_of_datatypes[]);
+int PMPI_Type_get_contents(MPI_Datatype datatype, MPI_Count max_integers, MPI_Count max_addresses, MPI_Count max_large_counts, MPI_Count max_datatypes, int array_of_integers[], MPI_Aint array_of_addresses[], MPI_Count array_of_large_counts[], MPI_Datatype array_of_datatypes[]);
 
 
 /*MPI_Type_get_envelope*/
@@ -6482,16 +6484,17 @@ int PMPI_Type_get_contents(MPI_Datatype datatype, int max_integers, int max_addr
 /**
  * @brief MPI function MPI_Type_get_envelope
  * 
- * @param datatype datatype to access
+ * @param datatype datatype to decode
  * @param num_integers number of input integers used in call constructing \mpiarg{combiner}
  * @param num_addresses number of input addresses used in call constructing \mpiarg{combiner}
+ * @param num_large_counts number of input large counts used in call constructing \mpiarg{combiner}
  * @param num_datatypes number of input datatypes used in call constructing \mpiarg{combiner}
  * @param combiner combiner
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_get_envelope(MPI_Datatype datatype, int *num_integers, int *num_addresses, int *num_datatypes, int *combiner);
-int PMPI_Type_get_envelope(MPI_Datatype datatype, int *num_integers, int *num_addresses, int *num_datatypes, int *combiner);
+int MPI_Type_get_envelope(MPI_Datatype datatype, MPI_Count *num_integers, MPI_Count *num_addresses, MPI_Count *num_large_counts, MPI_Count *num_datatypes, int *combiner);
+int PMPI_Type_get_envelope(MPI_Datatype datatype, MPI_Count *num_integers, MPI_Count *num_addresses, MPI_Count *num_large_counts, MPI_Count *num_datatypes, int *combiner);
 
 
 /*MPI_Type_get_extent*/
@@ -6505,8 +6508,8 @@ int PMPI_Type_get_envelope(MPI_Datatype datatype, int *num_integers, int *num_ad
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_get_extent(MPI_Datatype datatype, MPI_Aint *lb, MPI_Aint *extent);
-int PMPI_Type_get_extent(MPI_Datatype datatype, MPI_Aint *lb, MPI_Aint *extent);
+int MPI_Type_get_extent(MPI_Datatype datatype, MPI_Count *lb, MPI_Count *extent);
+int PMPI_Type_get_extent(MPI_Datatype datatype, MPI_Count *lb, MPI_Count *extent);
 
 
 /*MPI_Type_get_extent_x*/
@@ -6546,12 +6549,12 @@ int PMPI_Type_get_name(MPI_Datatype datatype, char *type_name, int *resultlen);
  * 
  * @param datatype datatype to get information on
  * @param true_lb true lower bound of datatype
- * @param true_extent true size of datatype
+ * @param true_extent true extent of datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Aint *true_lb, MPI_Aint *true_extent);
-int PMPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Aint *true_lb, MPI_Aint *true_extent);
+int MPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent);
+int PMPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Count *true_lb, MPI_Count *true_extent);
 
 
 /*MPI_Type_get_true_extent_x*/
@@ -6561,7 +6564,7 @@ int PMPI_Type_get_true_extent(MPI_Datatype datatype, MPI_Aint *true_lb, MPI_Aint
  * 
  * @param datatype datatype to get information on
  * @param true_lb true lower bound of datatype
- * @param true_extent true size of datatype
+ * @param true_extent true extent of datatype
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -6574,7 +6577,7 @@ int PMPI_Type_get_true_extent_x(MPI_Datatype datatype, MPI_Count *true_lb, MPI_C
 /**
  * @brief MPI function MPI_Type_indexed
  * 
- * @param count number of blocks -- also number of entries in \mpiarg{array_of_displacements} and \mpiarg{array_of_blocklengths}
+ * @param count number of blocks---also number of entries in \mpiarg{array_of_displacements} and \mpiarg{array_of_blocklengths}
  * @param array_of_blocklengths number of elements per block
  * @param array_of_displacements displacement for each block, in multiples of \mpiarg{oldtype}
  * @param oldtype old datatype
@@ -6582,8 +6585,8 @@ int PMPI_Type_get_true_extent_x(MPI_Datatype datatype, MPI_Count *true_lb, MPI_C
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_indexed(int count, const int array_of_blocklengths[], const int array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_indexed(int count, const int array_of_blocklengths[], const int array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_indexed(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_indexed(MPI_Count count, const MPI_Count array_of_blocklengths[], const MPI_Count array_of_displacements[], MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Type_match_size*/
@@ -6622,7 +6625,7 @@ int PMPI_Type_set_attr(MPI_Datatype datatype, int type_keyval, void *attribute_v
  * @brief MPI function MPI_Type_set_name
  * 
  * @param datatype datatype whose identifier is to be set
- * @param type_name the character string which is remembered as the name
+ * @param type_name the character string that is remembered as the name
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -6635,13 +6638,13 @@ int PMPI_Type_set_name(MPI_Datatype datatype, const char *type_name);
 /**
  * @brief MPI function MPI_Type_size
  * 
- * @param datatype datatype
+ * @param datatype datatype to get information on
  * @param size datatype size
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_size(MPI_Datatype datatype, int *size);
-int PMPI_Type_size(MPI_Datatype datatype, int *size);
+int MPI_Type_size(MPI_Datatype datatype, MPI_Count *size);
+int PMPI_Type_size(MPI_Datatype datatype, MPI_Count *size);
 
 
 /*MPI_Type_size_x*/
@@ -6649,7 +6652,7 @@ int PMPI_Type_size(MPI_Datatype datatype, int *size);
 /**
  * @brief MPI function MPI_Type_size_x
  * 
- * @param datatype datatype
+ * @param datatype datatype to get information on
  * @param size datatype size
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
@@ -6671,8 +6674,8 @@ int PMPI_Type_size_x(MPI_Datatype datatype, MPI_Count *size);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Type_vector(int count, int blocklength, int stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
-int PMPI_Type_vector(int count, int blocklength, int stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int MPI_Type_vector(MPI_Count count, MPI_Count blocklength, MPI_Count stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
+int PMPI_Type_vector(MPI_Count count, MPI_Count blocklength, MPI_Count stride, MPI_Datatype oldtype, MPI_Datatype *newtype);
 
 
 /*MPI_Unpack*/
@@ -6690,8 +6693,8 @@ int PMPI_Type_vector(int count, int blocklength, int stride, MPI_Datatype oldtyp
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Unpack(const void *inbuf, int insize, int *position, void *outbuf, int outcount, MPI_Datatype datatype, MPI_Comm comm);
-int PMPI_Unpack(const void *inbuf, int insize, int *position, void *outbuf, int outcount, MPI_Datatype datatype, MPI_Comm comm);
+int MPI_Unpack(const void *inbuf, MPI_Count insize, MPI_Count *position, void *outbuf, MPI_Count outcount, MPI_Datatype datatype, MPI_Comm comm);
+int PMPI_Unpack(const void *inbuf, MPI_Count insize, MPI_Count *position, void *outbuf, MPI_Count outcount, MPI_Datatype datatype, MPI_Comm comm);
 
 
 /*MPI_Unpack_external*/
@@ -6709,8 +6712,8 @@ int PMPI_Unpack(const void *inbuf, int insize, int *position, void *outbuf, int 
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Unpack_external(const char datarep[], const void *inbuf, MPI_Aint insize, MPI_Aint *position, void *outbuf, int outcount, MPI_Datatype datatype);
-int PMPI_Unpack_external(const char datarep[], const void *inbuf, MPI_Aint insize, MPI_Aint *position, void *outbuf, int outcount, MPI_Datatype datatype);
+int MPI_Unpack_external(const char datarep[], const void *inbuf, MPI_Count insize, MPI_Count *position, void *outbuf, MPI_Count outcount, MPI_Datatype datatype);
+int PMPI_Unpack_external(const char datarep[], const void *inbuf, MPI_Count insize, MPI_Count *position, void *outbuf, MPI_Count outcount, MPI_Datatype datatype);
 
 
 /*MPI_Unpublish_name*/
@@ -6747,7 +6750,7 @@ int PMPI_Wait(MPI_Request *request, MPI_Status *status);
 /**
  * @brief MPI function MPI_Waitall
  * 
- * @param count lists length
+ * @param count list length
  * @param array_of_requests array of requests
  * @param array_of_statuses array of status objects
  *
@@ -6804,8 +6807,8 @@ int PMPI_Waitsome(int incount, MPI_Request array_of_requests[], int *outcount, i
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Win_allocate(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
-int PMPI_Win_allocate(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
+int MPI_Win_allocate(MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
+int PMPI_Win_allocate(MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
 
 
 /*MPI_Win_allocate_shared*/
@@ -6822,8 +6825,8 @@ int PMPI_Win_allocate(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Win_allocate_shared(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
-int PMPI_Win_allocate_shared(MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
+int MPI_Win_allocate_shared(MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
+int PMPI_Win_allocate_shared(MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, void *baseptr, MPI_Win *win);
 
 
 /*MPI_Win_attach*/
@@ -6882,8 +6885,8 @@ int PMPI_Win_complete(MPI_Win win);
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, MPI_Win *win);
-int PMPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info, MPI_Comm comm, MPI_Win *win);
+int MPI_Win_create(void *base, MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, MPI_Win *win);
+int PMPI_Win_create(void *base, MPI_Aint size, MPI_Aint disp_unit, MPI_Info info, MPI_Comm comm, MPI_Win *win);
 
 
 /*MPI_Win_create_dynamic*/
@@ -7089,7 +7092,7 @@ int PMPI_Win_get_errhandler(MPI_Win win, MPI_Errhandler *errhandler);
  * @brief MPI function MPI_Win_get_group
  * 
  * @param win 
- * @param group group of processes which share access to the window
+ * @param group group of processes that share access to the window
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -7131,7 +7134,7 @@ int PMPI_Win_get_name(MPI_Win win, char *win_name, int *resultlen);
 /**
  * @brief MPI function MPI_Win_lock
  * 
- * @param lock_type either \const{MPI_LOCK_EXCLUSIVE} or \const{MPI_LOCK_SHARED}
+ * @param lock_type either \mpiconst{MPI_LOCK_EXCLUSIVE} or \mpiconst{MPI_LOCK_SHARED}
  * @param rank rank of locked window
  * @param assert 
  * @param win 
@@ -7220,7 +7223,7 @@ int PMPI_Win_set_info(MPI_Win win, MPI_Info info);
  * @brief MPI function MPI_Win_set_name
  * 
  * @param win window whose identifier is to be set
- * @param win_name the character string which is remembered as the name
+ * @param win_name the character string that is remembered as the name
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
@@ -7234,15 +7237,15 @@ int PMPI_Win_set_name(MPI_Win win, const char *win_name);
  * @brief MPI function MPI_Win_shared_query
  * 
  * @param win shared memory window object
- * @param rank rank in the group of window win or \const{MPI_PROC_NULL}
+ * @param rank rank in the group of window win or \mpiconst{MPI_PROC_NULL}
  * @param size size of the window segment
  * @param disp_unit local unit size for displacements, in bytes
  * @param baseptr address for load/store access to window segment
  *
  * @return int MPI_SUCCESS on success other MPI_* error code otherwise 
  */
-int MPI_Win_shared_query(MPI_Win win, int rank, MPI_Aint *size, int *disp_unit, void *baseptr);
-int PMPI_Win_shared_query(MPI_Win win, int rank, MPI_Aint *size, int *disp_unit, void *baseptr);
+int MPI_Win_shared_query(MPI_Win win, int rank, MPI_Aint *size, MPI_Aint *disp_unit, void *baseptr);
+int PMPI_Win_shared_query(MPI_Win win, int rank, MPI_Aint *size, MPI_Aint *disp_unit, void *baseptr);
 
 
 /*MPI_Win_start*/

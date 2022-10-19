@@ -1,6 +1,7 @@
 from mpiiface import MPI_Interface, MPI_Standard_meta
 
-a = MPI_Interface("./prepass.dat", MPI_Standard_meta(lang="fbind", fprefix=""))
+with open("./prepass.dat", "r") as f:
+	a = MPI_Interface(f, MPI_Standard_meta(lang="fbind", fprefix=""))
 
 # First Print Conversion Functions
 print("""

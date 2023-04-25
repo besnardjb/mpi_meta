@@ -1,12 +1,18 @@
 import json
 import copy
-from bindingtypes import BIG_C_KIND_MAP, SMALL_C_KIND_MAP
+from bindingtypes import *
 
 class MPI_Standard_meta():
 
     def __init__(self, lang="std", fprefix="", fsuffix="", mpi_version="4.0.0"):
         varray = [int(c) for c in mpi_version.split(".") ]
-        self._std2ckindmap = BIG_C_KIND_MAP if varray[0] >= 4 else SMALL_C_KIND_MAP
+        
+        self._stdkindmap = {
+            'c': [BIG_C_KIND_MAP, SMALL_C_KIND_MAP],
+            'f': [BIG_F90_KIND_MAP, SMALL_F90_KIND_MAP],
+            'f08': [BIG_F08_KIND_MAP, SMALL_F08_KIND_MAP]
+        }
+        
         self.lang = lang
         self.fprefix = fprefix
         self.fsuffix = fsuffix
@@ -14,18 +20,45 @@ class MPI_Standard_meta():
     def fname(self, name):
         return self.fprefix + name + self.fsuffix
 
-    def _kind_expand_c(self, kind):
-        if kind in self._std2ckindmap:
-            return self._std2ckindmap[kind]
+    def _kind_expand_c(self, kind, large=False):
+        map = self._stdkindmap['c'][0] if large else self._stdkindmap['c'][1]
+        if kind in map:
+            return map[kind]
+        else:
+            return "ERR"
+        
+    def _kind_expand_f(self, kind, ver='f', large=False):
+        map = self._stdkindmap['f08'] if ver == 'f08' else self._stdkindmap['f']
+        map = map[0] if large else map[1]
+                 
+        if kind in map:
+            value = map[kind]
+            if value:
+                repl = {
+                    'TYPE(*)': "TYPE(INTEGER)",
+                    'DIMENSION(..)': "DIMENSION(10)",
+                    '<type>': "TYPE(INTEGER)",
+                    'CHARACTER*(*)': 'CHARACTER*(10)'
+                }
+                for k, v in repl.items():
+                    value = value.replace(k, v)
+                return value
+            else:
+                return ""
         else:
             return "ERR"
 
-    def kind_expand(self, kind):
-        if self.lang == "std":
+    def kind_expand(self, kind, lang=None, large=None):
+        if lang is None:
+            lang = self.lang
+        if lang == "std":
             return kind
-        elif self.lang == "c" or self.lang == "fbind":
-            return self._kind_expand_c(kind)
+        elif lang == "c" or lang == "fbind":
+            return self._kind_expand_c(kind, large=large)
+        elif lang in ["f", "f77", "f90", "f08"]:
+            return self._kind_expand_f(kind, lang, large=large)
         else:
+            print(lang)
             raise Exception("No such kind expand")
 
 
@@ -69,6 +102,9 @@ class MPI_Parameter():
     def array_length(self):
         return isinstance(self._get_attr("length"), list)
 
+    def attr(self, k):
+        return self._get_attr(k)
+    
     def _get_c_pointer(self):
 
         if self.meta.lang != "c" and self.meta.lang != "fbind":
@@ -90,9 +126,9 @@ class MPI_Parameter():
             return ''
 
         if self.kind() in ('BUFFER', 'C_BUFFER', 'C_BUFFER2', 'C_BUFFER3',
-                                    'C_BUFFER4', 'STRING', 'EXTRA_STATE',
+                                    'C_BUFFER4', 'EXTRA_STATE',
                                     'EXTRA_STATE2', 'ATTRIBUTE_VAL', 'STATUS',
-                                    'ATTRIBUTE_VAL_10', 'STRING_ARRAY',
+                                    'ATTRIBUTE_VAL_10', 'STRING', 'STRING_ARRAY',
                                     'FUNCTION', 'FUNCTION_SMALL', 'POLYFUNCTION',
                                     'TOOL_MPI_OBJ', 'F08_STATUS', 'F90_STATUS'):
             return '*'
@@ -104,7 +140,7 @@ class MPI_Parameter():
 
         return ''
 
-    def get_c_array(self):
+    def get_c_array(self, dflt_size=""):
         if self.meta.lang != "c" and self.meta.lang != "fbind":
             return ''
         # Add "[]" if:
@@ -122,24 +158,24 @@ class MPI_Parameter():
                 self.length() is not None and
                 not isinstance(self.length(), list) and
                 not self.pointer()):
-            return '[]'
+            return '[{}]'.format(dflt_size)
 
         # required by MPI_UNPACK_EXTERNAL, it uses array notation for a string.
         if ( self.kind()  == 'STRING' and
                 self.length() == '*' and
                 not self.pointer()):
-            return '[]'
+            return '[{}]'.format(dflt_size)
 
         if ( self.kind()  == 'STRING_ARRAY' or
                  self.kind()  == 'STRING_2DARRAY'):
-            return '[]'
+            return '[{}]'.format(dflt_size)
 
         # As of MPI-4.0, we have array parameters with -- at most -- 2
         # dimensions.  Always print the first dimension as [] (above).
         # If we have a second dimension, print it (e.g.,
         # MPI_GROUP_RANGE_INCL & EXCL).
         if isinstance(self.length(), list):
-            return '[][{len}]'.format(len=self.length()[1])
+            return '[{dflt}][{len}]'.format(dflt=dflt_size, len=self.length()[1])
 
         return ''
 
@@ -171,14 +207,35 @@ class MPI_Parameter():
     def constant(self):
         return self._get_attr("constant")
 
-    def kind_expand(self):
+    def kind_expand(self, lang=None, large=None):
         if (self.kind() == "FUNCTION") or (self.kind() == "FUNCTION_SMALL") or self.kind() == "POLYFUNCTION":
             return self._get_attr("func_type")
         else:
-            return self.meta.kind_expand(self.kind())
+            return self.meta.kind_expand(self.kind(), lang, large)
 
     def type_c(self, noconst=False):
         return ("const " if self.constant() and not noconst else "") + self.kind_expand()
+
+
+    def get_f_pointer(self, ver="f"):
+        if self.kind() in ['BUFFER', 'C_BUFFER', 'C_BUFFER2', 'C_BUFFER3',
+                                    'C_BUFFER4', 'EXTRA_STATE',
+                                    'EXTRA_STATE2', 'ATTRIBUTE_VAL', 'STATUS',
+                                    'ATTRIBUTE_VAL_10', 'STRING_ARRAY']:
+            if ver in ['f', 'f77', 'f90']:
+                return "(10)"
+        return ""
+    
+    def type_decl_f(self, altername=None, lang="f"):
+        name = altername if altername else self.name()
+        
+        if lang in ['f08']:
+            return "{}{} :: {}".format(self.kind_expand(lang=lang),
+                                    self.get_f_pointer(ver='f08'),
+                                    name)
+        else:
+            return "{} {}{}".format(self.kind_expand(lang=lang), name, self.get_f_pointer(ver='f'))
+            
 
     def type_full_c(self):
         return "{}{}{}".format( self.type_c(),
@@ -187,6 +244,13 @@ class MPI_Parameter():
 
     def type_c_is_pointer(self):
         return (self._get_c_pointer() == "*")
+
+    def type_decl_c(self, altername=None, default_cnt="2"):
+        name = altername if altername else self.name()
+        return "{} {}{}{}".format( self.type_c(),
+                                   self._get_c_pointer(),
+                                   name,
+                                   self.get_c_array(default_cnt))
 
     def str_c(self):
         return "{} {}{}{}".format( self.type_c(),
@@ -227,11 +291,26 @@ class MPI_Parameter():
     def name(self):
         if self.kind() == "VARARGS":
             return ""
-        return self._get_attr("name")
+        elif self.meta.lang == "fbind" and self._get_attr("name_f90"):
+            return self._get_attr("name_f90")
+        else:
+            return self._get_attr("name")
 
     def set_name(self, name):
         self.content["name"] = name
+    
+    def isc(self):
+        return not ("c_parameter" in self._get_attr("suppress"))
+        
+    
+    def isf(self):
+        return not ("f90_parameter" in self._get_attr("suppress"))
+        
+    def isf90(self):
+        return self.isf()
 
+    def isf08(self):
+        return not ("f08_parameter" in self._get_attr('suppress'))
 
 
 class MPI_Function():
@@ -247,13 +326,10 @@ class MPI_Function():
         self.content = content.copy()
         self._register_parameters(meta)
 
-    def params(self):
-        if self.meta.lang == "c" or self.meta.lang:
-            #No Ierror
-            return [ x for x in self.parameters if x.name() != "ierror"]
-        else:
-            return self.parameters
-
+    def params(self, lang='c'):
+        lang = self.meta.lang if not lang else lang
+        return [x for x in self.parameters if "{}_parameter".format(lang) not in x._get_attr('suppress')]
+        
     def _gen_fbind_paramlist(self):
         # We need to add string suffixes and inline args
         # depending on the fortran support type
@@ -297,6 +373,9 @@ class MPI_Function():
             return self.content[attr]
         else:
             return None
+
+    def attr(self, attr):
+        return self._get_attr(attr)
 
     def isf08conv(self):
         return (self.name().find("f2f08") != -1) or (self.name().find("f082f") != -1)
@@ -404,9 +483,18 @@ class MPI_Function():
         attrs = self._get_attr("attributes")
         return attrs["lis_expressible"]
 
+    def isf(self):
+        attrs = self._get_attr("attributes")
+        return attrs["f90_expressible"] and not attrs['not_with_mpif']
+
+
     def isf90(self):
         attrs = self._get_attr("attributes")
         return attrs["f90_expressible"]
+
+    def isf08(self):
+        attrs = self._get_attr("attributes")
+        return attrs["f08_expressible"]
 
     def iscallback(self):
         attrs = self._get_attr("attributes")
@@ -423,6 +511,7 @@ class MPI_Function():
     def isdeprecated(self):
         attrs = self._get_attr("attributes")
         return attrs["deprecated"]
+
 
     def number_of_buffer_params(self):
         bcnt = [1 for x in self.parameters if x.kind() == "BUFFER"]
@@ -475,7 +564,9 @@ class MPI_Function():
 class MPI_Interface():
 
     def _load_content(self, f):
-        self.standard_content = json.load(f)
+            if isinstance(f, str):
+                f = open(f, 'r')
+            self.standard_content = json.load(f)
 
     def _load_function(self, meta=None):
         self.functions = {}
@@ -486,6 +577,9 @@ class MPI_Interface():
         self.meta = meta
         self._load_content(path)
         self._load_function(meta)
+
+    def get(self, funcname):
+        return self.functions[funcname]
 
     def forall(self, callback, filter_callback=None):
 

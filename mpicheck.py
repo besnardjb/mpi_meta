@@ -7,7 +7,6 @@ from mpiiface import MPI_Interface, MPI_Standard_meta, MPI_Function, MPI_Paramet
 
 SRCDIR="."
 OUTDIR="./tests/"
-random_words = open("/usr/share/dict/words","r").read().split()
 standards = {}
 yaml_handlers = {}
 
@@ -37,12 +36,13 @@ def build_c_code(func, decls, calls):
     for d in decls:
         varname = d[0]
         param = d[1]
+        legacymode = d[2] if len(d) >= 3 else False
         if not param.isc():
             continue
         if param.kind() == "VARARGS":
             code_decls.append("char* {}[10];".format(varname))
         else:
-            code_decls.append("{};".format(param.type_decl_c(varname)))
+            code_decls.append("{};".format(param.type_decl_c(varname, legacy=legacymode)))
         params.append(varname)
     
     if func.return_kind() != "NOTHING":
@@ -80,8 +80,9 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
     for d in decls:
         varname = d[0]
         param = d[1]
+        legacymode = d[2] if len(d) >= 3 else False
         params.append(varname)
-        code_decls.append("{}".format(param.type_decl_f(varname, lang=lang)))
+        code_decls.append("{}".format(param.type_decl_f(varname, lang=lang, legacy=legacymode)))
     
     if func.return_kind() not in ["NOTHING", "ERROR_CODE"]:
         code_decls.append("{} ret".format(func.meta.kind_expand(func.return_kind(), lang=lang)))
@@ -103,7 +104,7 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
 def build_f77_code(func, decls, calls):
     new_decls = []
     for idx, value in enumerate(decls):
-        name, param = value
+        name, param, _ = value
         if param.isf():
             new_decls.append(value)
     return _build_f_code(func, new_decls, calls, lang="f90", include= "include 'mpif.h'")
@@ -111,7 +112,7 @@ def build_f77_code(func, decls, calls):
 def build_f90_code(func, decls, calls):
     new_decls = []
     for idx, value in enumerate(decls):
-        name, param = value
+        name, param, _ = value
         if param.isf90():
             new_decls.append(value)
     return _build_f_code(func, new_decls, calls, lang="f90", include="use mpi")
@@ -119,7 +120,7 @@ def build_f90_code(func, decls, calls):
 def build_f08_code(func, decls, calls):
     new_decls = []
     for idx, value in enumerate(decls):
-        name, param = value
+        name, param, _ = value
         if param.isf08():
             new_decls.append(value)
     return _build_f_code(func, new_decls, calls, lang="f08", include="use mpi_f08")
@@ -193,17 +194,17 @@ def process_function(func):
         # -> take ALL args (there is no attribute to set parameters that
         # SHOULD NOT be part of largecount prototypes)
         if largecount_alternate_func:
-            decls_large.append((varname, param))
+            decls_large.append((varname, param, False))
        
         #  Now, attenmpt to build two scenarios at once:
         # either (largecount func & not 'large_only' parameter) or not
         # largecount func -> pick up
         if largecount_alternate_func and not param.attr('large_only') or not largecount_alternate_func:
-            decls.append((varname, param))
-                    
+            decls.append((varname, param, True))
+
     calls.append("{}".format(func.name()))
     calls.append("P{}".format(func.name()))
-    
+
     if decls_large:
         calls_large.append("{}_c".format(func.name()))
         calls_large.append("P{}_c".format(func.name()))
@@ -240,7 +241,7 @@ def process_function(func):
                   lang=lang, tags=[lang, "functions"])
     
         if largecount_alternate_func:
-            dump_code(func, large_srcpath + ext, decls_large, calls_large)
+            dump_code(func, large_srcpath + ext, decls_large, calls_large, lang=lang)
             dump_yaml("{}_c_lang{}".format(func.name(), lang),
                       large_std,
                       os.path.basename(large_srcpath + ext),

@@ -5,12 +5,19 @@ from bindingtypes import *
 class MPI_Standard_meta():
 
     def __init__(self, lang="std", fprefix="", fsuffix="", mpi_version="4.0.0"):
-        varray = [int(c) for c in mpi_version.split(".") ]
+        self._varray = [int(c) for c in mpi_version.split('.')]
         
         self._stdkindmap = {
-            'c': [BIG_C_KIND_MAP, SMALL_C_KIND_MAP],
-            'f': [BIG_F90_KIND_MAP, SMALL_F90_KIND_MAP],
-            'f08': [BIG_F08_KIND_MAP, SMALL_F08_KIND_MAP]
+            "standard": {
+                'c': BIG_C_KIND_MAP,
+                'f': BIG_F90_KIND_MAP,
+                'f08': BIG_F08_KIND_MAP,
+            },
+            "legacy": {
+                'c': SMALL_C_KIND_MAP,
+                'f': SMALL_F90_KIND_MAP,
+                'f08': SMALL_F08_KIND_MAP
+            }
         }
         
         self.lang = lang
@@ -20,16 +27,21 @@ class MPI_Standard_meta():
     def fname(self, name):
         return self.fprefix + name + self.fsuffix
 
-    def _kind_expand_c(self, kind, large=False):
-        map = self._stdkindmap['c'][0] if large else self._stdkindmap['c'][1]
+    def _get_proper_kindmap(self, version):
+        version = [int(c) for c in version.split('.')]
+        res = [(version[i]-self._varray[i])*(1000/(10**i)) for i in range(0, len(version))]
+        return self._stdkindmap['standard'] if sum(res) >= 0 else self._stdkindmap['legacy']
+
+    def _kind_expand_c(self, kind, version="4.0.0"):
+        map = self._get_proper_kindmap(version)['c']
         if kind in map:
             return map[kind]
         else:
             return "ERR"
         
-    def _kind_expand_f(self, kind, ver='f', large=False):
-        map = self._stdkindmap['f08'] if ver == 'f08' else self._stdkindmap['f']
-        map = map[0] if large else map[1]
+    def _kind_expand_f(self, kind, ver='f', version="4.0.0"):
+        mapkind = self._get_proper_kindmap(version)
+        map = mapkind['f08'] if ver == 'f08' else mapkind['f']
                  
         if kind in map:
             value = map[kind]
@@ -48,15 +60,15 @@ class MPI_Standard_meta():
         else:
             return "ERR"
 
-    def kind_expand(self, kind, lang=None, large=None):
+    def kind_expand(self, kind, lang=None, version="4.0.0"):
         if lang is None:
             lang = self.lang
         if lang == "std":
             return kind
         elif lang == "c" or lang == "fbind":
-            return self._kind_expand_c(kind, large=large)
+            return self._kind_expand_c(kind, version=version)
         elif lang in ["f", "f77", "f90", "f08"]:
-            return self._kind_expand_f(kind, lang, large=large)
+            return self._kind_expand_f(kind, lang, version=version)
         else:
             print(lang)
             raise Exception("No such kind expand")
@@ -92,6 +104,9 @@ class MPI_Parameter():
                        "ERRHANDLER",
                        "COMMUNICATOR"]
         return self.kind() in handle_kind
+
+    def ispoly(self):
+        return "POLY" in self.kind() and self.kind() != "POLYFUNCTION"
 
     def pointer(self):
         return self._get_attr("pointer")
@@ -207,14 +222,14 @@ class MPI_Parameter():
     def constant(self):
         return self._get_attr("constant")
 
-    def kind_expand(self, lang=None, large=None):
+    def kind_expand(self, lang=None, legacy=False):
         if (self.kind() == "FUNCTION") or (self.kind() == "FUNCTION_SMALL") or self.kind() == "POLYFUNCTION":
             return self._get_attr("func_type")
         else:
-            return self.meta.kind_expand(self.kind(), lang, large)
+            return self.meta.kind_expand(self.kind(), lang=lang, version="3.1.0" if legacy else "4.0.0")
 
-    def type_c(self, noconst=False):
-        return ("const " if self.constant() and not noconst else "") + self.kind_expand()
+    def type_c(self, noconst=False, legacy=False):
+        return ("const " if self.constant() and not noconst else "") + self.kind_expand(legacy=legacy)
 
 
     def get_f_pointer(self, ver="f"):
@@ -226,15 +241,15 @@ class MPI_Parameter():
                 return "(10)"
         return ""
     
-    def type_decl_f(self, altername=None, lang="f"):
+    def type_decl_f(self, altername=None, lang="f", legacy=False):
         name = altername if altername else self.name()
         
         if lang in ['f08']:
-            return "{}{} :: {}".format(self.kind_expand(lang=lang),
+            return "{}{} :: {}".format(self.kind_expand(lang=lang, legacy=legacy),
                                     self.get_f_pointer(ver='f08'),
                                     name)
         else:
-            return "{} {}{}".format(self.kind_expand(lang=lang), name, self.get_f_pointer(ver='f'))
+            return "{} {}{}".format(self.kind_expand(lang=lang), name, self.get_f_pointer(ver='f'), legacy=legacy)
             
 
     def type_full_c(self):
@@ -245,15 +260,15 @@ class MPI_Parameter():
     def type_c_is_pointer(self):
         return (self._get_c_pointer() == "*")
 
-    def type_decl_c(self, altername=None, default_cnt="2"):
+    def type_decl_c(self, altername=None, default_cnt="2", legacy=False):
         name = altername if altername else self.name()
-        return "{} {}{}{}".format( self.type_c(),
+        return "{} {}{}{}".format( self.type_c(legacy=legacy),
                                    self._get_c_pointer(),
                                    name,
                                    self.get_c_array(default_cnt))
 
-    def str_c(self):
-        return "{} {}{}{}".format( self.type_c(),
+    def str_c(self, legacy=False):
+        return "{} {}{}{}".format( self.type_c(legacy=legacy),
                                    self._get_c_pointer(),
                                    self.name(),
                                    self.get_c_array())

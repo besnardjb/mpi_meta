@@ -8,15 +8,23 @@ from mpiiface import MPI_Interface, MPI_Standard_meta, MPI_Function, MPI_Paramet
 SRCDIR="."
 OUTDIR="./tests/"
 standards = {}
+func_tags = {}
 yaml_handlers = {}
 
 def get_func_standard(s):
+    global standards
     try:
         return min([idx for idx in standards.keys() if s in standards[idx]['add']])
     except ValueError:
             print("WARNING: {} NOT FOUND !".format(s))
             return max(standards.keys())
-            
+
+def get_func_tags(s, std_hint=None):
+    global func_tags
+    try:
+        return func_tags[s]
+    except KeyError:
+        return []
 
 def isascii(s):
     return len(s) == len(s.encode())
@@ -164,6 +172,7 @@ def process_function(func):
     calls = []
     calls_large = []
     std = get_func_standard(func.name())
+    tags = get_func_tags(func.name())
     large_std = 4
     picked_names = []
     # 4 scenarios (2x2):
@@ -238,19 +247,19 @@ def process_function(func):
         dump_code(func, srcpath + ext, decls, calls, lang=lang)
         dump_yaml("{}_lang{}".format(func.name(), lang),
                   std, os.path.basename(srcpath + ext),
-                  lang=lang, tags=[lang, "functions"])
+                  lang=lang, tags=[lang, "functions", *tags])
     
         if largecount_alternate_func:
             dump_code(func, large_srcpath + ext, decls_large, calls_large, lang=lang)
             dump_yaml("{}_c_lang{}".format(func.name(), lang),
                       large_std,
                       os.path.basename(large_srcpath + ext),
-                      lang=lang, tags=[lang, 'functions', 'large_count'])
+                      lang=lang, tags=[lang, 'functions', 'large_count', *tags])
 
 
 def classify_functions_per_standard():
     
-    global SRCDIR, OUTDIR
+    global SRCDIR, OUTDIR, standards, func_tags
     
     for d in ["functions"]:
         path = os.path.join(SRCDIR, "classification", d)
@@ -265,8 +274,14 @@ def classify_functions_per_standard():
             standards.setdefault(std, {'add': [], 'rm': []})
             
             with open(os.path.join(path, f), 'r') as fh:
-                standards[std][target] = (fh.read().strip().split("\n"))
-                
+                content = fh.read().strip().split("\n")
+                for tags in [l.split(" ", 1) for l in content]:
+                    standards[std][target].append(tags[0])
+                    if len(tags) <= 1: 
+                        continue
+                    if tags[0] not in func_tags:
+                        func_tags[tags[0]] = tags[1:]
+                    
             prefix = os.path.join(OUTDIR, d, std)
             os.makedirs(prefix, exist_ok = True)
             #for ext in ['c', 'F', 'f90', 'f08']:
@@ -276,7 +291,7 @@ def classify_functions_per_standard():
             #        os.symlink(srcfile, dstfile)
             yaml_handlers["{}/{}".format(d, std)] = open(os.path.join(prefix, "pcvs.yml"), "w")
 def is_part_of_bindings(f):
-    return f.isbindings() and \
+    return (f.isbindings() or f.name().endswith('_c2f') or f.name().endswith('_f2c')) and \
         f.isc() and \
 		not f.iscallback()
 

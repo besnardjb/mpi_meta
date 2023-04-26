@@ -2,7 +2,7 @@ MPI_Aint
 MPI_Comm
 MPI_Datatype
 MPI_Errhandler
-MPI_Group
+MPI_Group group
 MPI_Op
 MPI_Request
 MPI_Status

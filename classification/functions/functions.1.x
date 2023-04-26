@@ -1,56 +1,56 @@
 
 MPI_Intercomm_create
-MPI_Pack
+MPI_Pack datatype datatype
 MPI_Attr_put
-MPI_Reduce
+MPI_Reduce collective
 MPI_Send
-MPI_Group_translate_ranks
-MPI_Barrier
-MPI_Group_free
+MPI_Group_translate_ranks group
+MPI_Barrier collective
+MPI_Group_free group
 MPI_Isend
 MPI_Waitall
-MPI_Type_contiguous
+MPI_Type_contiguous datatype datatype
 MPI_Cancel
-MPI_Type_indexed
-MPI_Comm_group
+MPI_Type_indexed datatype datatype
+MPI_Comm_group group
 MPI_Op_create
 MPI_Abort
 MPI_Irecv
 MPI_Init
 MPI_Test
-MPI_Scatter
+MPI_Scatter collective
 MPI_DUP_FN
 MPI_Buffer_detach
 MPI_Request_free
-MPI_Gather
-MPI_Bcast
-MPI_Scatterv
+MPI_Gather collective
+MPI_Bcast collective
+MPI_Scatterv collective
 MPI_Comm_split
 MPI_NULL_COPY_FN
-MPI_Type_vector
+MPI_Type_vector datatype datatype
 MPI_Wait
 MPI_Keyval_create
-MPI_Gatherv
+MPI_Gatherv collective
 MPI_Attr_get
-MPI_Allgather
-MPI_Group_rank
+MPI_Allgather collective
+MPI_Group_rank group
 MPI_Comm_create
 MPI_Comm_rank
-MPI_Group_incl
+MPI_Group_incl group
 MPI_Comm_dup
 MPI_Buffer_attach
-MPI_Pack_size
+MPI_Pack_size datatype datatype
 MPI_Comm_size
 MPI_Finalize
 MPI_Comm_free
 MPI_NULL_DELETE_FN
 MPI_Recv
-MPI_Type_commit
+MPI_Type_commit datatype datatype
 MPI_Wtime
-MPI_Group_excl
-MPI_Unpack
-MPI_Type_size
+MPI_Group_excl group
+MPI_Unpack datatype datatype
+MPI_Type_size datatype datatype
 MPI_Bsend
 MPI_Test_cancelled
 MPI_Iprobe
-MPI_Scan
+MPI_Scan collective

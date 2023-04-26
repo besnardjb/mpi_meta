@@ -6,22 +6,22 @@ MPI_Errhandler
 MPI_F08_status
 MPI_File
 MPI_Fint
-MPI_Group
-MPI_Info
+MPI_Group group
+MPI_Info info
 MPI_Message
 MPI_Offset
 MPI_Op
 MPI_Request
 MPI_Session
 MPI_Status
-MPI_T_cb_safety
-MPI_T_cvar_handle
-MPI_T_enum
-MPI_T_event_instance
-MPI_T_event_registration
-MPI_T_pvar_handle
-MPI_T_pvar_session
-MPI_T_source_order
+MPI_T_cb_safety MPI_T
+MPI_T_cvar_handle MPI_T
+MPI_T_enum MPI_T
+MPI_T_event_instance MPI_T
+MPI_T_event_registration MPI_T
+MPI_T_pvar_handle MPI_T
+MPI_T_pvar_session MPI_T
+MPI_T_source_order MPI_T
 MPI_Win
 MPI_Delete_function
 MPI_Grequest_query_function
@@ -29,9 +29,9 @@ MPI_Comm_copy_attr_function
 MPI_Grequest_free_function
 MPI_Grequest_cancel_function
 MPI_Datarep_conversion_function
-MPI_Type_delete_attr_function
+MPI_Type_delete_attr_function datatype datatype
 MPI_User_function
-MPI_Type_copy_attr_function
+MPI_Type_copy_attr_function datatype datatype
 MPI_Datarep_extent_function
 MPI_Comm_errhandler_function
 MPI_Win_delete_attr_function

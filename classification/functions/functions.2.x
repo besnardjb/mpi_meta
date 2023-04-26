@@ -2,74 +2,74 @@
 MPI_Intercomm_create
 MPI_Sendrecv_replace
 MPI_File_write_all_end
-MPI_Pack
-MPI_Info_get_nkeys
-MPI_Type_get_true_extent
+MPI_Pack datatype datatype
+MPI_Info_get_nkeys info
+MPI_Type_get_true_extent datatype datatype
 MPI_Attr_put
 MPI_Comm_delete_attr
 MPI_File_delete
-MPI_Allgatherv
-MPI_Type_get_envelope
+MPI_Allgatherv collective
+MPI_Type_get_envelope datatype datatype
 MPI_Lookup_name
 MPI_Comm_free_keyval
 MPI_Intercomm_merge
 MPI_File_set_atomicity
-MPI_Type_get_name
-MPI_Allreduce
+MPI_Type_get_name datatype datatype
+MPI_Allreduce collective
 MPI_File_seek_shared
 MPI_TYPE_DUP_FN
 MPI_Win_post
 MPI_Testall
 MPI_Win_call_errhandler
 MPI_WIN_DUP_FN
-MPI_Cart_coords
+MPI_Cart_coords topology
 MPI_Errhandler_free
 MPI_Comm_spawn_multiple
 MPI_File_read_at
 MPI_File_read_at_all
-MPI_Reduce
+MPI_Reduce collective
 MPI_Comm_create_errhandler
-MPI_Alltoallv
+MPI_Alltoallv collective
 MPI_Send
 MPI_Win_lock
 MPI_TYPE_NULL_COPY_FN
-MPI_Group_translate_ranks
+MPI_Group_translate_ranks group
 MPI_File_get_errhandler
-MPI_Type_set_name
+MPI_Type_set_name datatype datatype
 MPI_File_get_amode
-MPI_Type_set_attr
-MPI_Barrier
+MPI_Type_set_attr datatype datatype
+MPI_Barrier collective
 MPI_Initialized
-MPI_Dist_graph_neighbors
+MPI_Dist_graph_neighbors topology
 MPI_Win_delete_attr
-MPI_Type_create_f90_real
+MPI_Type_create_f90_real datatype datatype
 MPI_Comm_test_inter
 MPI_Comm_set_errhandler
 MPI_Get_version
-MPI_Cart_get
+MPI_Cart_get topology
 MPI_Recv_init
-MPI_Group_free
+MPI_Group_free group
 MPI_Isend
-MPI_Cart_rank
+MPI_Cart_rank topology
 MPI_Ssend
 MPI_Waitall
-MPI_Type_create_indexed_block
+MPI_Type_create_indexed_block datatype datatype
 MPI_Win_create_errhandler
-MPI_Group_range_incl
+MPI_Group_range_incl group
 MPI_Comm_connect
-MPI_Cart_sub
-MPI_Type_contiguous
+MPI_Cart_sub topology
+MPI_Type_contiguous datatype datatype
 MPI_File_write_all_begin
-MPI_Type_get_extent
+MPI_Type_get_extent datatype datatype
 MPI_Cancel
 MPI_File_write_ordered_end
 MPI_File_seek
-MPI_Type_indexed
-MPI_Type_create_f90_complex
+MPI_Type_indexed datatype datatype
+MPI_Type_create_f90_complex datatype datatype
 MPI_Open_port
-MPI_Comm_group
+MPI_Comm_group group
 MPI_Win_create_keyval
-MPI_Dist_graph_neighbors_count
+MPI_Dist_graph_neighbors_count topology
 MPI_File_read_ordered_begin
 MPI_Topo_test
 MPI_Op_create
@@ -80,44 +80,44 @@ MPI_Abort
 MPI_Irecv
 MPI_Probe
 MPI_Init
-MPI_Type_create_resized
+MPI_Type_create_resized datatype datatype
 MPI_Win_set_errhandler
 MPI_Test
-MPI_Scatter
+MPI_Scatter collective
 MPI_Add_error_string
 MPI_Grequest_complete
 MPI_DUP_FN
 MPI_File_read_at_all_begin
-MPI_Alltoallw
+MPI_Alltoallw collective
 MPI_Testsome
-MPI_Dist_graph_create
+MPI_Dist_graph_create topology
 MPI_Buffer_detach
-MPI_Reduce_scatter_block
-MPI_Cart_shift
+MPI_Reduce_scatter_block collective
+MPI_Cart_shift topology
 MPI_Request_free
 MPI_Startall
 MPI_File_iwrite
 MPI_File_iread_shared
 MPI_Win_test
-MPI_Gather
-MPI_Bcast
-MPI_Comm_remote_group
+MPI_Gather collective
+MPI_Bcast collective
+MPI_Comm_remote_group group
 MPI_File_set_errhandler
 MPI_Get
 MPI_Wtick
 MPI_Comm_set_attr
-MPI_Type_match_size
+MPI_Type_match_size datatype datatype
 MPI_Waitany
 MPI_Close_port
-MPI_Type_create_hvector
+MPI_Type_create_hvector datatype datatype
 MPI_Comm_set_name
 MPI_File_sync
-MPI_Type_dup
-MPI_Type_get_attr
-MPI_Graphdims_get
+MPI_Type_dup datatype datatype
+MPI_Type_get_attr datatype datatype
+MPI_Graphdims_get topology
 MPI_Win_get_errhandler
-MPI_Group_intersection
-MPI_Info_free
+MPI_Group_intersection group
+MPI_Info_free info
 MPI_TYPE_NULL_DELETE_FN
 MPI_Comm_get_parent
 MPI_File_get_position_shared
@@ -127,36 +127,36 @@ MPI_File_open
 MPI_Accumulate
 MPI_File_write_ordered_begin
 MPI_Grequest_start
-MPI_Type_delete_attr
+MPI_Type_delete_attr datatype datatype
 MPI_Start
-MPI_Scatterv
+MPI_Scatterv collective
 MPI_Comm_split
-MPI_Group_size
-MPI_Info_get_nthkey
-MPI_Graph_neighbors
+MPI_Group_size group
+MPI_Info_get_nthkey info
+MPI_Graph_neighbors topology
 MPI_NULL_COPY_FN
 MPI_Win_fence
 MPI_Win_wait
-MPI_Info_delete
-MPI_Type_create_keyval
-MPI_Cart_create
-MPI_Cart_map
+MPI_Info_delete info
+MPI_Type_create_keyval datatype datatype
+MPI_Cart_create topology
+MPI_Cart_map topology
 MPI_File_set_size
 MPI_Send_init
 MPI_File_get_group
-MPI_Type_create_f90_integer
-MPI_Type_vector
+MPI_Type_create_f90_integer datatype datatype
+MPI_Type_vector datatype datatype
 MPI_File_iread_at
 MPI_File_create_errhandler
-MPI_Graph_get
+MPI_Graph_get topology
 MPI_Status_set_elements
 MPI_File_write
 MPI_Unpublish_name
 MPI_Rsend
 MPI_Sendrecv
 MPI_Wait
-MPI_Unpack_external
-MPI_Group_compare
+MPI_Unpack_external datatype datatype
+MPI_Group_compare group
 MPI_Keyval_create
 MPI_Win_set_name
 MPI_File_write_at
@@ -165,40 +165,40 @@ MPI_Comm_get_errhandler
 MPI_File_iwrite_shared
 MPI_File_close
 MPI_File_get_info
-MPI_Alloc_mem
-MPI_Gatherv
+MPI_Alloc_mem collective
+MPI_Gatherv collective
 MPI_Attr_get
 MPI_Attr_delete
 MPI_File_write_at_all_begin
-MPI_Type_free
+MPI_Type_free datatype datatype
 MPI_Comm_compare
 MPI_File_set_view
 MPI_Ssend_init
 MPI_File_get_type_extent
-MPI_Allgather
+MPI_Allgather collective
 MPI_Error_class
 MPI_Issend
-MPI_Info_get_valuelen
+MPI_Info_get_valuelen info
 MPI_Rsend_init
 MPI_Is_thread_main
-MPI_Group_rank
+MPI_Group_rank group
 MPI_Comm_create
 MPI_COMM_DUP_FN
-MPI_Type_create_hindexed
-MPI_Dist_graph_create_adjacent
+MPI_Type_create_hindexed datatype datatype
+MPI_Dist_graph_create_adjacent topology
 MPI_Register_datarep
 MPI_File_read_ordered_end
-MPI_Pack_external_size
+MPI_Pack_external_size datatype datatype
 MPI_Request_get_status
 MPI_Win_free
 MPI_File_iwrite_at
 MPI_Comm_rank
-MPI_Group_incl
+MPI_Group_incl group
 MPI_COMM_NULL_DELETE_FN
 MPI_Init_thread
-MPI_Info_set
+MPI_Info_set info
 MPI_File_read_all_begin
-MPI_Info_create
+MPI_Info_create info
 MPI_Comm_dup
 MPI_Comm_disconnect
 MPI_File_read_all
@@ -206,31 +206,31 @@ MPI_Testany
 MPI_Comm_get_attr
 MPI_File_preallocate
 MPI_File_call_errhandler
-MPI_Graph_map
+MPI_Graph_map topology
 MPI_File_write_all
 MPI_COMM_NULL_COPY_FN
 MPI_Error_string
 MPI_Add_error_code
-MPI_Alltoall
-MPI_Reduce_local
+MPI_Alltoall collective
+MPI_Reduce_local collective
 MPI_Comm_get_name
 MPI_WIN_NULL_COPY_FN
-MPI_Type_free_keyval
+MPI_Type_free_keyval datatype datatype
 MPI_File_get_view
-MPI_Dims_create
+MPI_Dims_create topology
 MPI_Buffer_attach
-MPI_Pack_size
-MPI_Group_range_excl
+MPI_Pack_size datatype datatype
+MPI_Group_range_excl group
 MPI_Comm_size
 MPI_Op_commutative
-MPI_Type_create_struct
+MPI_Type_create_struct datatype datatype
 MPI_Win_get_name
 MPI_File_get_atomicity
 MPI_Finalized
 MPI_File_read_all_end
 MPI_Win_free_keyval
 MPI_Finalize
-MPI_Type_create_subarray
+MPI_Type_create_subarray datatype datatype
 MPI_File_write_at_all_end
 MPI_File_write_at_all
 MPI_Free_mem
@@ -241,44 +241,44 @@ MPI_Comm_spawn
 MPI_File_read
 MPI_NULL_DELETE_FN
 MPI_Recv
-MPI_Type_get_contents
+MPI_Type_get_contents datatype datatype
 MPI_File_set_info
 MPI_Status_set_cancelled
 MPI_File_get_size
 MPI_Comm_join
-MPI_Type_create_darray
-MPI_Graph_create
-MPI_Info_get
+MPI_Type_create_darray datatype datatype
+MPI_Graph_create topology
+MPI_Info_get info
 MPI_Query_thread
 MPI_File_read_at_all_end
 MPI_Keyval_free
-MPI_Cartdim_get
+MPI_Cartdim_get topology
 MPI_Bsend_init
 MPI_Get_count
-MPI_Reduce_scatter
+MPI_Reduce_scatter collective
 MPI_Ibsend
-MPI_Group_union
+MPI_Group_union group
 MPI_Win_get_group
 MPI_Pcontrol
 MPI_Win_create
 MPI_Get_address
 MPI_Win_set_attr
-MPI_Type_commit
+MPI_Type_commit datatype datatype
 MPI_Win_get_attr
-MPI_Pack_external
+MPI_Pack_external datatype datatype
 MPI_Wtime
 MPI_Win_complete
 MPI_File_get_position
-MPI_Group_excl
+MPI_Group_excl group
 MPI_Exscan
 MPI_Comm_accept
-MPI_Unpack
-MPI_Type_size
+MPI_Unpack datatype datatype
+MPI_Type_size datatype datatype
 MPI_Waitsome
 MPI_Get_processor_name
 MPI_Bsend
 MPI_Comm_call_errhandler
-MPI_Graph_neighbors_count
+MPI_Graph_neighbors_count topology
 MPI_Test_cancelled
 MPI_Add_error_class
 MPI_File_write_shared
@@ -288,6 +288,24 @@ MPI_Iprobe
 MPI_File_read_shared
 MPI_Comm_remote_size
 MPI_File_write_ordered
-MPI_Group_difference
-MPI_Info_dup
-MPI_Scan
+MPI_Group_difference group
+MPI_Info_dup info
+MPI_Scan collective
+MPI_Comm_c2f wrapper
+MPI_Comm_f2c wrapper
+MPI_File_c2f wrapper
+MPI_Group_c2f wrapper
+MPI_Info_c2f wrapper
+MPI_Op_c2f wrapper
+MPI_Op_f2c wrapper
+MPI_File_f2c wrapper
+MPI_Group_f2c wrapper
+MPI_Info_f2c wrapper
+MPI_Request_f2c wrapper
+MPI_Request_c2f wrapper
+MPI_Status_f2c wrapper
+MPI_Status_c2f wrapper
+MPI_Type_f2c wrapper
+MPI_Win_f2c wrapper
+MPI_Win_c2f wrapper
+MPI_Type_c2f wrapper

@@ -480,6 +480,7 @@ MPI_Status_f2c
 MPI_Status_f2f08
 MPI_Status_set_cancelled
 MPI_Status_set_elements
+MPI_Status_set_elements_c
 MPI_Status_set_elements_x
 MPI_T_category_changed
 MPI_T_category_get_categories

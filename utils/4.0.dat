@@ -4,7 +4,6 @@ MPI_Accumulate_c
 MPI_Add_error_class
 MPI_Add_error_code
 MPI_Add_error_string
-MPI_Address
 MPI_Aint_add
 MPI_Aint_diff
 MPI_Allgather
@@ -50,7 +49,7 @@ MPI_Buffer_attach
 MPI_Buffer_attach_c
 MPI_Buffer_detach
 MPI_Buffer_detach_c
-MPI_Cancel
+MPI_Cancel DEPBY:4.0
 MPI_Cart_coords
 MPI_Cart_create
 MPI_Cartdim_get
@@ -113,11 +112,8 @@ MPI_Dist_graph_neighbors
 MPI_Dist_graph_neighbors_count
 MPI_Dup_fn
 MPI_Errhandler_c2f
-MPI_Errhandler_create
 MPI_Errhandler_f2c
 MPI_Errhandler_free
-MPI_Errhandler_get
-MPI_Errhandler_set
 MPI_Error_class
 MPI_Error_string
 MPI_Exscan
@@ -306,11 +302,11 @@ MPI_Info_delete
 MPI_Info_dup
 MPI_Info_f2c
 MPI_Info_free
-MPI_Info_get
+MPI_Info_get DEPBY:4.0
 MPI_Info_get_nkeys
 MPI_Info_get_nthkey
 MPI_Info_get_string
-MPI_Info_get_valuelen
+MPI_Info_get_valuelen DEPBY:4.0
 MPI_Info_set
 MPI_Init
 MPI_Initialized
@@ -469,7 +465,7 @@ MPI_Session_get_num_psets
 MPI_Session_get_pset_info
 MPI_Session_init
 MPI_Session_set_errhandler
-MPI_Sizeof
+MPI_Sizeof DEPBY:4.0
 MPI_Ssend
 MPI_Ssend_c
 MPI_Ssend_init
@@ -569,7 +565,6 @@ MPI_Type_create_subarray_c
 MPI_Type_delete_attr
 MPI_Type_dup
 MPI_Type_dup_fn
-MPI_Type_extent
 MPI_Type_f2c
 MPI_Type_free
 MPI_Type_free_keyval
@@ -585,11 +580,8 @@ MPI_Type_get_name
 MPI_Type_get_true_extent
 MPI_Type_get_true_extent_c
 MPI_Type_get_true_extent_x
-MPI_Type_hindexed
-MPI_Type_hvector
 MPI_Type_indexed
 MPI_Type_indexed_c
-MPI_Type_lb
 MPI_Type_match_size
 MPI_Type_null_copy_fn
 MPI_Type_null_delete_fn
@@ -598,8 +590,6 @@ MPI_Type_set_name
 MPI_Type_size
 MPI_Type_size_c
 MPI_Type_size_x
-MPI_Type_struct
-MPI_Type_ub
 MPI_Type_vector
 MPI_Type_vector_c
 MPI_Unpack

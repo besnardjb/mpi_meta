@@ -50,7 +50,7 @@ for f in sorted(glob("./tags/*")):
                 standard_labels[large_func].add(cat)
 
 with open("standard_level.json", "w") as f:
-    json.dump(standard_labels, f, default=lambda x: list(x))
+    json.dump(standard_labels, f, default=lambda x: sorted(list(x)))
 
 print("!!!!!!!!!!!!!!!")
 print("STATISTICS !!!!")

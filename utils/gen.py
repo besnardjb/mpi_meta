@@ -13,6 +13,8 @@ def load_def(file):
     ret = []
     with open(file,"r") as f:
         for line in f:
+            if not line.startswith("MPI_"):
+                continue
             array = line.strip().split(" ", 1)
             funcname = array[0]
             default_tags = set()
@@ -42,6 +44,8 @@ for f in sorted(glob("./tags/*")):
     with open(f, 'r') as fh:
         for line in fh:
             func = line.strip()
+            if not line.startswith("MPI_"):
+                continue
             standard_labels.setdefault(func, set())
             standard_labels[func].add(cat)
 

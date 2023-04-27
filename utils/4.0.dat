@@ -653,8 +653,3 @@ MPI_Win_unlock_all
 MPI_Win_wait
 MPI_Wtick
 MPI_Wtime
-MPI_Get_elements_c
-MPI_Type_get_extent_c
-MPI_Type_get_true_extent_c
-MPI_Type_size_c
-

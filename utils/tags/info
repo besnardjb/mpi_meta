@@ -1,0 +1,10 @@
+MPI_Info_create
+MPI_Info_delete
+MPI_Info_dup
+MPI_Info_free
+MPI_Info_get
+MPI_Info_get_nkeys
+MPI_Info_get_nthkey
+MPI_Info_get_string
+MPI_Info_get_valuelen
+MPI_Info_set

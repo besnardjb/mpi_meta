@@ -90,6 +90,10 @@ tbody > tr:hover {background-color: rgba(100,100,100);}
    color: red;
 }
 
+#notdefined{
+   color: gray;
+}
+
 </style>
 
 
@@ -122,11 +126,24 @@ def has_dep(f):
       return float(dep[0].split(":")[1])
    return None
 
+def was_present_in_past(f, std):
+   vers = [x for x in bindings[f] if x.startswith("STD")]
+   vers = [float(x.split(":")[1]) for x in vers]
+   vers.sort()
+   fstd = float(std)
+   for v in vers:
+      if v < fstd:
+         return True
+   return False
+
 def get_symbol_for_std(f, std):
    std_int_val = float(std)
 
    if "STD:{}".format(std) not in bindings[f]:
-      return "<div data-tooltip='{}' id='notpresent'>&#10006;</div>".format(std)
+      if was_present_in_past(f, std):
+         return "<div data-tooltip='{}' id='notpresent'>&#10006;</div>".format(std)
+      else:
+         return "<div data-tooltip='{}' id='notdefined'>-</div>".format(std)
 
    deprecated_txt = "<div data-tooltip='{}' id='deprecated'>&#9888;</div>".format(std)
    dep = has_dep(f)

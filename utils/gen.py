@@ -2,71 +2,61 @@ import os
 from glob import glob
 import json
 
-standards = []
+standard_labels = {}
+stat = {}
 
 def clean_mpi_name(name):
-   lname = name.lower()
-   return "MPI_" + lname[4].upper() + lname[5:]
+    lname = name.lower()
+    return "MPI_{}".format(lname[4:].capitalize())
 
 def load_def(file):
-   ret = []
-   with open(file,"r") as f:
-      data = f.read()
-      lines = data.split("\n")
-      for l in lines:
-         ret.append(clean_mpi_name(l))
-   return ret
+    ret = []
+    with open(file,"r") as f:
+        for line in f:
+            array = line.strip().split(" ", 1)
+            funcname = array[0]
+            default_tags = set()
+            if len(array) > 1:
+                default_tags = array[1:]
+
+            yield (clean_mpi_name(funcname), set(default_tags))
 
 
-for f in glob("*.dat"):
-   name = f.replace(".dat","")
-   standards.append(float(name))
+for f in sorted(glob("*.dat")):
+    std = f.replace(".dat", "")
+    print("Processing ... {}".format(std))
+    std_tag = "STD:{}".format(std)
+    for func, tagset in load_def(f):
+        stat.setdefault(std, {'total': 0, 'new': 0})
+        if func not in standard_labels:
+            standard_labels[func] = set()
+            stat[std]['new'] += 1
 
-standards.sort()
-standards = [str(x) for x in standards]
+        standard_labels[func].add(std_tag)
+        if tagset:
+            standard_labels[func].update(tagset)
+        stat[std]['total'] += 1
 
-print(standards)
+for f in sorted(glob("./tags/*")):
+    cat = os.path.basename(f)
+    with open(f, 'r') as fh:
+        for line in fh:
+            func = line.strip()
+            standard_labels.setdefault(func, set())
+            standard_labels[func].add(cat)
 
+            large_func = "{}_c".format(func)
+            if large_func in standard_labels:
+                standard_labels[large_func].add(cat)
 
-print(clean_mpi_name("MPI_CART_SUB"))
-
-funcs = {}
-
-
-def is_in_prev_std(ref_std, function):
-   prev = standards[:standards.index(ref_std)]
-   all_prev_func = set()
-   for s in prev:
-      if s in funcs:
-         all_prev_func.update(funcs[s])
-
-   return function in all_prev_func
-
-
-for s in standards:
-   print("Processing ... {}".format(s))
-   fdef = load_def("./{}.dat".format(s))
-   ndef = [ x for x in fdef if not is_in_prev_std(s, x)]
-   funcs[s] = ndef
+with open("standard_level.json", "w") as f:
+    json.dump(standard_labels, f, default=lambda x: list(x))
 
 print("!!!!!!!!!!!!!!!")
 print("STATISTICS !!!!")
 print("!!!!!!!!!!!!!!!")
 
 tot = 0
-for s in standards:
-   tot = tot + len(funcs[s])
-   print("{} len {} tot {}".format(s, len(funcs[s]), tot))
+for std in sorted(stat.keys()):
+    print("{} len {} tot {}".format(std, stat[std]['new'], stat[std]['total']))
 
-
-standard_labels = {}
-
-
-for s in standards:
-   major = "REV:{}".format(s.split(".")[0])
-   std = "STD:{}".format(s)
-   for f in funcs[s]:
-      standard_labels[f] = [major, std]
-
-with open("standard_level.json", "w") as f:
-   json.dump(standard_labels, f, indent=4)

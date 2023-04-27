@@ -41,7 +41,7 @@ MPI_Comm_create_keyval
 MPI_Comm_delete_attr
 MPI_Comm_disconnect
 MPI_Comm_dup
-MPI_COMM_DUP_FN
+MPI_Comm_dup_fn
 MPI_Comm_f2c
 MPI_Comm_free
 MPI_Comm_free_keyval
@@ -51,8 +51,8 @@ MPI_Comm_get_name
 MPI_Comm_get_parent
 MPI_Comm_group
 MPI_Comm_join
-MPI_COMM_NULL_COPY_FN
-MPI_COMM_NULL_DELETE_FN
+MPI_Comm_null_copy_fn
+MPI_Comm_null_delete_fn
 MPI_Comm_rank
 MPI_Comm_remote_group
 MPI_Comm_remote_size
@@ -65,7 +65,7 @@ MPI_Comm_spawn_multiple
 MPI_Comm_split
 MPI_Comm_test_inter
 MPI_Dims_create
-MPI_DUP_FN
+MPI_Dup_fn
 MPI_Errhandler_c2f
 MPI_Errhandler_create
 MPI_Errhandler_f2c
@@ -191,13 +191,13 @@ MPI_Is_thread_main
 MPI_Keyval_create
 MPI_Keyval_free
 MPI_Lookup_name
-MPI_NULL_COPY_FN
-MPI_NULL_DELETE_FN
+MPI_Null_copy_fn
+MPI_Null_delete_fn
 MPI_Op_c2f
 MPI_Op_create
 MPI_Open_port
 MPI_Op_f2c
-MPI_op_free
+MPI_Op_free
 MPI_Pack
 MPI_Pack_external
 MPI_Pack_external_size
@@ -255,7 +255,7 @@ MPI_Type_create_struct
 MPI_Type_create_subarray
 MPI_Type_delete_attr
 MPI_Type_dup
-MPI_TYPE_DUP_FN
+MPI_Type_dup_fn
 MPI_Type_extent
 MPI_Type_f2c
 MPI_Type_free
@@ -271,8 +271,8 @@ MPI_Type_hvector
 MPI_Type_indexed
 MPI_Type_lb
 MPI_Type_match_size
-MPI_TYPE_NULL_COPY_FN
-MPI_TYPE_NULL_DELETE_FN
+MPI_Type_null_copy_fn
+MPI_Type_null_delete_fn
 MPI_Type_set_attr
 MPI_Type_set_name
 MPI_Type_size
@@ -293,7 +293,7 @@ MPI_Win_create
 MPI_Win_create_errhandler
 MPI_Win_create_keyval
 MPI_Win_delete_attr
-MPI_WIN_DUP_FN
+MPI_Win_dup_fn
 MPI_Win_f2c
 MPI_Win_fence
 MPI_Win_free
@@ -303,8 +303,8 @@ MPI_Win_get_errhandler
 MPI_Win_get_group
 MPI_Win_get_name
 MPI_Win_lock
-MPI_WIN_NULL_COPY_FN
-MPI_WIN_NULL_DELETE_FN
+MPI_Win_null_copy_fn
+MPI_Win_null_delete_fn
 MPI_Win_post
 MPI_Win_set_attr
 MPI_Win_set_errhandler

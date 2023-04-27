@@ -1,4 +1,5 @@
 import os
+import json
 import re
 import copy
 import random
@@ -8,7 +9,6 @@ from mpiiface import MPI_Interface, MPI_Standard_meta, MPI_Function, MPI_Paramet
 SRCDIR="."
 OUTDIR="./tests/"
 standards = {}
-func_tags = {}
 yaml_handlers = {}
 
 def get_func_standard(s):
@@ -19,10 +19,19 @@ def get_func_standard(s):
             print("WARNING: {} NOT FOUND !".format(s))
             return max(standards.keys())
 
+def compute_min_std_from_tag(tags):
+    stds = []
+    for x in tags:
+        if x.startswith("STD:"):
+            stds.append(float(x.split(":")[1]))
+    if len(stds) == 0:
+        return 'WARN:UNTAGGED'
+    return min(stds)
+
 def get_func_tags(s, std_hint=None):
-    global func_tags
+    global funcs
     try:
-        return func_tags[s]
+        return funcs[s]
     except KeyError:
         return []
 
@@ -145,14 +154,35 @@ def dump_code(func, filepath, decls, calls, lang="c"):
         content = build_f08_code(func, decls, calls)
     
     assert (content)
+    create_path_to_file(filepath)
+
     with open(filepath, "w") as fh:
         fh.write(content)
 
+def create_path_to_file(f):
+    path = os.path.dirname(f)
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    else:
+        # should remove before ?
+        pass
 
-def dump_yaml(nodename, std, srcfile, tags, lang="c"):
+
+def dump_yaml(nodename, rev, srcfile, tags, lang="c"):
+        global OUTDIR
         # then, append to associated YAML
         extra_flags = "-ffree-form" if lang in ['f', 'f77', 'f90'] else ""
-        tags.append("std_{}".format(std))
+        target_yaml = "functions/{}".format(rev)
+        
+        if target_yaml not in yaml_handlers.keys():
+            target_path = os.path.join(OUTDIR, "functions", str(rev),  "pcvs.yml")
+            create_path_to_file(target_path)
+            hdl = open(target_path, "w")
+            yaml_handlers[target_yaml] = hdl
+        else:
+            hdl = yaml_handlers[target_yaml]
+
+
         YAML().dump({"{}".format(nodename): {
                 "tag": tags,
                 "build": {
@@ -160,7 +190,7 @@ def dump_yaml(nodename, std, srcfile, tags, lang="c"):
                     "cflags": "-Wno-deprecated-declarations -Werror {}".format(extra_flags)
                 }
             }
-        }, yaml_handlers["functions/{}".format(std)])
+        }, hdl)
 
 def process_function(func):
     global OUTDIR, yaml_handlers
@@ -171,9 +201,6 @@ def process_function(func):
     decls_large = []
     calls = []
     calls_large = []
-    std = get_func_standard(func.name())
-    tags = get_func_tags(func.name())
-    large_std = 4
     picked_names = []
     # 4 scenarios (2x2):
     #  - Function has a 'largecount' version -> any 'POLY' param type
@@ -216,19 +243,7 @@ def process_function(func):
 
     if decls_large:
         calls_large.append("{}_c".format(func.name()))
-        calls_large.append("P{}_c".format(func.name()))
-
-    srcpath = os.path.join(OUTDIR,
-                     "functions",
-                     "{}".format(std),
-                     "{}".format(func.name())
-        )
-    
-    large_srcpath = os.path.join(OUTDIR,
-                     "functions",
-                     "{}".format(large_std),
-                     "{}_c".format(func.name())
-    )
+        calls_large.append("P{}_c".format(func.name())) 
             
     
     comb_list = []
@@ -244,22 +259,34 @@ def process_function(func):
     for i in comb_list:
         lang = i[0]
         ext = i[1]
+        func_tags = get_func_tags(func.name())
+        rev_tag = compute_min_std_from_tag(func_tags)
+        srcpath = os.path.join(OUTDIR,
+            "functions",
+            "{}".format(str(rev_tag)),
+            "{}".format(func.name())
+        )
         dump_code(func, srcpath + ext, decls, calls, lang=lang)
-        dump_yaml("{}_lang{}".format(func.name(), lang),
-                  std, os.path.basename(srcpath + ext),
-                  lang=lang, tags=[lang, "functions", *tags])
+        dump_yaml("{}_lang{}".format(func.name(), lang), rev_tag, os.path.basename(srcpath + ext),
+                  lang=lang, tags=[lang, "functions", *func_tags])
     
         if largecount_alternate_func:
+            large_func_tags = get_func_tags("{}_c".format(func.name()))
+            large_rev_tag = compute_min_std_from_tag(large_func_tags)
+            large_srcpath = os.path.join(OUTDIR,
+                            "functions",
+                            "{}".format(str(large_rev_tag)),
+                            "{}_c".format(func.name())
+            )
             dump_code(func, large_srcpath + ext, decls_large, calls_large, lang=lang)
-            dump_yaml("{}_c_lang{}".format(func.name(), lang),
-                      large_std,
+            dump_yaml("{}_c_lang{}".format(func.name(), lang), large_rev_tag,
                       os.path.basename(large_srcpath + ext),
-                      lang=lang, tags=[lang, 'functions', 'large_count', *tags])
+                      lang=lang, tags=[lang, 'functions', 'large_count', *large_func_tags])
 
 
 def classify_functions_per_standard():
     
-    global SRCDIR, OUTDIR, standards, func_tags
+    global SRCDIR, OUTDIR, standards
     
     for d in ["functions"]:
         path = os.path.join(SRCDIR, "classification", d)
@@ -290,12 +317,19 @@ def classify_functions_per_standard():
             #    if not os.path.exists(dstfile):
             #        os.symlink(srcfile, dstfile)
             yaml_handlers["{}/{}".format(d, std)] = open(os.path.join(prefix, "pcvs.yml"), "w")
+
 def is_part_of_bindings(f):
-    return (f.isbindings() or f.name().endswith('_c2f') or f.name().endswith('_f2c')) and \
+    return (f.isbindings() or f.iswrapper()) and \
         f.isc() and \
 		not f.iscallback()
 
+def load_functions(f):
+    global funcs
+    with open(f, 'r') as fh:
+        funcs = json.load(fh)
 
-classify_functions_per_standard()
-a = MPI_Interface("./prepass.dat", MPI_Standard_meta(lang="c", mpi_version="4.0.0"))
+load_functions(os.path.join(SRCDIR, "utils", "standard_level.json"))
+
+#classify_functions_per_standard()
+a = MPI_Interface(os.path.join(SRCDIR, "./prepass.dat"), MPI_Standard_meta(lang="c", mpi_version="4.0.0"))
 a.forall(process_function, is_part_of_bindings)

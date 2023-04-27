@@ -1,4 +1,5 @@
 import json
+import re
 import copy
 from bindingtypes import *
 
@@ -497,6 +498,9 @@ class MPI_Function():
     def isbindings(self):
         attrs = self._get_attr("attributes")
         return attrs["lis_expressible"]
+
+    def iswrapper(self):
+        return bool(re.fullmatch("^MPI_[a-zA-Z0-9_]+_(c|f(08)*)2(c|f(08)*)$", self.name()))
 
     def isf(self):
         attrs = self._get_attr("attributes")

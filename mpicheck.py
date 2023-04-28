@@ -187,7 +187,9 @@ def dump_yaml(nodename, rev, srcfile, tags, lang="c"):
                 "tag": tags,
                 "build": {
                     "files": ["{}".format(srcfile)],
-                    "cflags": "-Wno-deprecated-declarations -Werror {}".format(extra_flags)
+                    "sources": {
+                        "cflags": "-Wno-deprecated-declarations -Werror {}".format(extra_flags)
+                    }
                 }
             }
         }, hdl)

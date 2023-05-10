@@ -12,86 +12,60 @@ print("""
 <html>
 
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript">
+$(document).ready(function(){
+    $('#the_table').DataTable({
+        paging: false,
+        fixedHeader: true,
+        order: [[0, 'asc']],
+        columnDefs: [
+           {"className": "dt-center", "targets": "standards"},
+        ]
+    });
+});
+</script>-->
+
 <style>
-html,
-body {
-	height: 100%;
+div.container {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 h1 {
    text-align: center;
-   text-shadow: -1px -1px #0c0, 1px 1px #060, -3px 0 4px #000;
-   color: #FFF;
 }
 
-body {
-	margin: 0;
-	background: #000;
-	font-family: sans-serif;
-	font-weight: 100;
-   text-allign: center;
+.theader {
+      position: sticky;
+      top: 0;
 }
 
-[data-tooltip]::before {
-    position : absolute;
-    content : attr(data-tooltip);
-    background: #000;
-    opacity : 0;
+pre {
+   margin-top: 4px;
+   margin-bottom: 4px;
 }
-
-[data-tooltip]:hover::before {
-    opacity : 1;
-}
-
-[data-tooltip]:not([data-tooltip-persistent])::before {
-    pointer-events: none;
-}
-
-table {
-   margin-left:10%;
-   margin-right:10%;
-	width: 80%;
-	border-collapse: collapse;
-	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-th,
-td {
-	padding: 15px;
-	background-color: rgba(255,255,255,0.2);
-	color: #fff;
-}
-
-th {
-	text-align: left;
-}
-
-thead {
-	th {
-		background-color: #55608f;
-	}
-}
-
-
-
-tbody > tr:hover {background-color: rgba(100,100,100);}
-
 
 #deprecated {
    color: orange;
+   font-size: x-large;
 }
 
 #present {
-   color: lightgreen;
+   color: green;
+   font-size: x-large;
 }
 
 #notpresent {
    color: red;
+   font-size: x-large;
 }
 
 #notdefined{
-   color: gray;
+   color: #555;
+   font-size: small;
 }
 
 </style>
@@ -100,18 +74,18 @@ tbody > tr:hover {background-color: rgba(100,100,100);}
 <title>Table of MPI Functions</title>
 </head>
 
-<body>
+<body data-bs-theme="dark">
 
 <h1>MPI Function Table</h1>
 
 <div class="container">
-<table>
-  <thead>
-    <th>MPI Functions</th>
+<table class="table table-striped table-dark">
+  <thead class="theader thead-dark">
+    <th class="theader">MPI Functions</th>
 """)
 
 for s in stds:
-   print("    <th>{}</th>".format(s))
+   print("    <th class='standards'>{}</th>".format(s))
 
 print("""
 </thead>
@@ -141,11 +115,11 @@ def get_symbol_for_std(f, std):
 
    if "STD:{}".format(std) not in bindings[f]:
       if was_present_in_past(f, std):
-         return "<div data-tooltip='{}' id='notpresent'>&#10006;</div>".format(std)
+         return "<div id='notpresent'>&#10006;</div>".format(std)
       else:
-         return "<div data-tooltip='{}' id='notdefined'>-</div>".format(std)
+         return "<div id='notdefined'>N/A</div>".format(std)
 
-   deprecated_txt = "<div data-tooltip='{}' id='deprecated'>&#9888;</div>".format(std)
+   deprecated_txt = "<div id='deprecated'>&#9888;</div>".format(std)
    dep = has_dep(f)
    if dep:
       if dep < std_int_val:
@@ -153,14 +127,14 @@ def get_symbol_for_std(f, std):
    if "DEPBY:{}".format(std) in bindings[f]:
       return deprecated_txt
 
-   return "<div data-tooltip='{}' id='present'>&#10004;</div>".format(std)
+   return "<div id='present'>&#10004;</div>".format(std)
 
 
 
 for f in funcs:
    print("""
 <tr>
-    <td><b>{}</b></td>
+    <td><pre>{}</pre></td>
 """.format(f))
    for s in stds:
       print("    <td>{}</td>".format(get_symbol_for_std(f, s)))

@@ -11,14 +11,6 @@ OUTDIR="./tests/"
 standards = {}
 yaml_handlers = {}
 
-def get_func_standard(s):
-    global standards
-    try:
-        return min([idx for idx in standards.keys() if s in standards[idx]['add']])
-    except ValueError:
-            print("WARNING: {} NOT FOUND !".format(s))
-            return max(standards.keys())
-
 def compute_min_std_from_tag(tags):
     stds = []
     for x in tags:

@@ -250,7 +250,7 @@ class MPI_Parameter():
                                     self.get_f_pointer(ver='f08'),
                                     name)
         else:
-            return "{} {}{}".format(self.kind_expand(lang=lang), name, self.get_f_pointer(ver='f'), legacy=legacy)
+            return "{} {}{}".format(self.kind_expand(lang=lang, legacy=legacy), name, self.get_f_pointer(ver='f'))
             
 
     def type_full_c(self):

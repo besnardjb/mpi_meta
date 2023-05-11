@@ -55,6 +55,7 @@ class MPI_Standard_meta():
                 }
                 for k, v in repl.items():
                     value = value.replace(k, v)
+
                 return value
             else:
                 return ""
@@ -195,6 +196,26 @@ class MPI_Parameter():
 
         return ''
 
+    def gen_f_funcdef(self, varname, datatype, lang="f"):
+        funcdef = ""
+        decls = ""
+        if lang == "f08":
+            funcdef = """INTERFACE
+                SUBROUTINE the_func(val, err)
+                    import {d}
+                    TYPE({d}) :: val
+                    INTEGER :: err
+                END SUBROUTINE
+                END INTERFACE""".format(d=datatype)
+            decls = "PROCEDURE(the_func), POINTER :: {}".format(varname)
+        else:
+            funcdef = """
+subroutine {}(val, ierr)
+    integer val, ierr
+end subroutine""".format(varname)
+
+        return (funcdef, decls)
+
     def fbindpointer(self):
         return "*" if (not self._get_c_pointer() and not self.get_c_array()) else ""
 
@@ -209,6 +230,17 @@ class MPI_Parameter():
 
     def intent(self):
         return self._get_attr("param_direction")
+
+    def is_array(self):
+        return self._get_attr("length") is not None
+
+    def array_dims(self):
+        l = self._get_attr("length")
+        if l is None:
+            return l
+        if not isinstance(l, list):
+            l = [l]
+        return l
 
     def isout(self):
         intent = self.intent()
@@ -234,23 +266,49 @@ class MPI_Parameter():
 
 
     def get_f_pointer(self, ver="f"):
-        if self.kind() in ['BUFFER', 'C_BUFFER', 'C_BUFFER2', 'C_BUFFER3',
-                                    'C_BUFFER4', 'EXTRA_STATE',
-                                    'EXTRA_STATE2', 'ATTRIBUTE_VAL', 'STATUS',
+        if self.kind() in ['BUFFER', 'C_BUFFER2', 'C_BUFFER3',
+                                    'C_BUFFER4',
+                                    'EXTRA_STATE2', 'ATTRIBUTE_VAL',
                                     'ATTRIBUTE_VAL_10', 'STRING_ARRAY']:
             if ver in ['f', 'f77', 'f90']:
-                return "(10)"
-        return ""
+                return 10
+        return None
     
     def type_decl_f(self, altername=None, lang="f", legacy=False):
         name = altername if altername else self.name()
         
+        dims = []
+        ptr = self.get_f_pointer(ver=lang)
+        if ptr:
+            dims.append(str(ptr))
+        if self.is_array():
+            for d in self.array_dims():
+                if d.startswith("MPI_"):
+                    dims.append(d)
+                elif d.isdigit():
+                    dims.append(str(d))
+                else:
+                    dims.append("10")
+        dims = ",".join([elt for elt in dims])
         if lang in ['f08']:
+            # special case, declare character array
+            if self.kind() in ['STRING', 'STRING_ARRAY', "STRING_2DARRAY"]:
+                dims = "({})".format(dims if dims else "10")
+            elif dims: # otherwise, declare dimensions
+                dims = ", DIMENSION({})".format(dims)
+            else:
+                dims = ""
             return "{}{} :: {}".format(self.kind_expand(lang=lang, legacy=legacy),
-                                    self.get_f_pointer(ver='f08'),
+                                    dims,
                                     name)
         else:
-            return "{} {}{}".format(self.kind_expand(lang=lang, legacy=legacy), name, self.get_f_pointer(ver='f'))
+            if self.kind() in ['STRING', 'STRING_ARRAY', "STRING_2DARRAY"] or not dims:
+                # replaced by kind_expand when unrolling the bindings
+                dims = ""
+            elif dims:
+                dims = "(" + dims + ")"
+
+            return "{} {}{}".format(self.kind_expand(lang=lang, legacy=legacy), name, dims)
             
 
     def type_full_c(self):

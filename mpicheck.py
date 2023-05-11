@@ -95,28 +95,20 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
         if param.kind() == "VARARGS":
             continue
         # hack to manager user function for some fortran examples
-        if param.kind() == "FUNCTION" and "errhandler" in func.name():
-            if lang == "f08":
-                datatype = "failed"
-                for v in ["MPI_Comm", "MPI_Win", "MPI_Session", "MPI_File"]:
-                    if func.name().startswith(v):
+        if param.kind() == "FUNCTION":
+            datatype = None
+            for v in ["MPI_Comm", "MPI_Win", "MPI_Session", "MPI_File"]:
+                if func.name().startswith(v):
                         datatype = v
-                postpend.append("""
-                INTERFACE
-                SUBROUTINE the_func(val, error_code)
-                                   import {d}
-                                   TYPE({d}) :: val
-                                   INTEGER :: error_code
-                END SUBROUTINE
-                END INTERFACE""".format(d=datatype))
-                code_decls.append("PROCEDURE(the_func), POINTER :: {}".format(varname))
+            (fcdef, extra_decl) = param.gen_f_funcdef(varname, datatype, lang=lang)
+            if lang == "f08":
+                postpend.append(fcdef)
             else:
-               prepend.append("""
-                    subroutine {}(val, ierr)
-                       integer val, ierr
-                    end subroutine""".format(varname))
+                prepend.append(fcdef)
         else:
-            code_decls.append("{}".format(param.type_decl_f(varname, lang=lang, legacy=legacymode)))
+            extra_decl = "{}".format(param.type_decl_f(varname, lang=lang, legacy=legacymode))
+        
+        code_decls.append(extra_decl)
         params.append(varname)
     
     if func.return_kind() not in ["NOTHING", "ERROR_CODE"]:

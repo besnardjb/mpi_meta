@@ -86,12 +86,38 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
         
     code_decls = []
     code_calls = []
+    prepend = []
+    postpend = []
     for d in decls:
         varname = d[0]
         param = d[1]
         legacymode = d[2] if len(d) >= 3 else False
+        if param.kind() == "VARARGS":
+            continue
+        # hack to manager user function for some fortran examples
+        if param.kind() == "FUNCTION" and "errhandler" in func.name():
+            if lang == "f08":
+                datatype = "failed"
+                for v in ["MPI_Comm", "MPI_Win", "MPI_Session", "MPI_File"]:
+                    if func.name().startswith(v):
+                        datatype = v
+                postpend.append("""
+                INTERFACE
+                SUBROUTINE the_func(val, error_code)
+                                   import {d}
+                                   TYPE({d}) :: val
+                                   INTEGER :: error_code
+                END SUBROUTINE
+                END INTERFACE""".format(d=datatype))
+                code_decls.append("PROCEDURE(the_func), POINTER :: {}".format(varname))
+            else:
+               prepend.append("""
+                    subroutine {}(val, ierr)
+                       integer val, ierr
+                    end subroutine""".format(varname))
+        else:
+            code_decls.append("{}".format(param.type_decl_f(varname, lang=lang, legacy=legacymode)))
         params.append(varname)
-        code_decls.append("{}".format(param.type_decl_f(varname, lang=lang, legacy=legacymode)))
     
     if func.return_kind() not in ["NOTHING", "ERROR_CODE"]:
         code_decls.append("{} ret".format(func.meta.kind_expand(func.return_kind(), lang=lang)))
@@ -102,13 +128,21 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
             code_calls.append("ret = {}({})".format(c.lower(), ", ".join(params)))
         else:
             code_calls.append("call {}({})".format(c.lower(), ", ".join(params)))
+
     return """
+        {prepend}
         program main
-        {}
-        {}
-        {}
+        {inc}
+        {postpend}
+        {decl}
+        {call}
         end program main
-    """.format(include, "\n       ".join(code_decls), "\n       ".join(code_calls))
+    """.format(
+            prepend="\n".join(prepend),
+            postpend="\n".join(postpend),
+            inc=include,
+            decl="\n       ".join(code_decls),
+            call="\n       ".join(code_calls))
 
 def build_f77_code(func, decls, calls):
     new_decls = []

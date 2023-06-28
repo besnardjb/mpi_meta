@@ -1,4 +1,5 @@
 import os
+import textwrap
 import json
 import re
 import copy
@@ -95,12 +96,12 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
         if param.kind() == "VARARGS":
             continue
         # hack to manager user function for some fortran examples
-        if param.kind() == "FUNCTION":
+        if "FUNCTION" in param.kind():
             datatype = None
             for v in ["MPI_Comm", "MPI_Win", "MPI_Session", "MPI_File"]:
                 if func.name().startswith(v):
                         datatype = v
-            (fcdef, extra_decl) = param.gen_f_funcdef(varname, datatype, lang=lang)
+            (fcdef, extra_decl) = param.gen_f_funcdef(varname, lang=lang)
             if lang == "f08":
                 postpend.append(fcdef)
             else:
@@ -117,9 +118,15 @@ def _build_f_code(func, decls, calls, include=None, lang=None):
 
     for c in calls:
         if has_ret:
-            code_calls.append("ret = {}({})".format(c.lower(), ", ".join(params)))
+            line = "ret = {}({})".format(c.lower(), ", ".join(params))
         else:
-            code_calls.append("call {}({})".format(c.lower(), ", ".join(params)))
+            line = "call {}({})".format(c.lower(), ", ".join(params))
+        chunks = textwrap.wrap(line, width=90)
+        for idx, chunk in enumerate(chunks):
+            if idx == len(chunks) -1:
+                code_calls.append(chunk)
+            else:
+                code_calls.append(chunk + " &")
 
     return """
         {prepend}
@@ -206,7 +213,7 @@ def dump_yaml(nodename, rev, srcfile, tags, lang="c"):
                 "build": {
                     "files": ["{}".format(srcfile)],
                     "sources": {
-                        "cflags": "-Wno-deprecated-declarations -Werror {}".format(extra_flags)
+                        "cflags": "-Wno-deprecated-declarations -Werror -Wno-error=line-truncation {}".format(extra_flags)
                     }
                 }
             }
@@ -291,6 +298,12 @@ def process_function(func):
                   lang=lang, tags=[lang, "functions", *func_tags])
     
         if largecount_alternate_func:
+            if lang == "f08":
+                # f08 large counts are handled through polymorphism
+                calls_large = calls
+            elif lang in ["f90", "f77"]:
+                continue
+
             large_func_tags = get_func_tags("{}_c".format(func.name()))
             large_rev_tag = compute_min_std_from_tag(large_func_tags)
             large_srcpath = os.path.join(OUTDIR,

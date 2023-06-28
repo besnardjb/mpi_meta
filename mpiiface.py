@@ -1,4 +1,5 @@
 import json
+import random
 import re
 import copy
 from bindingtypes import *
@@ -196,23 +197,213 @@ class MPI_Parameter():
 
         return ''
 
-    def gen_f_funcdef(self, varname, datatype, lang="f"):
+
+    def gen_f_funcdef(self, varname, lang="f"):
+        
+        user_func_decls = {
+                "MPI_Comm_copy_attr_function": [
+                """(oldcomm, comm_keyval, extra_state, attribute_val_in, &
+                    & attribute_val_out, flag, ierror)
+                    import MPI_Comm, MPI_ADDRESS_KIND
+					TYPE(MPI_Comm) :: oldcomm
+					INTEGER :: comm_keyval, ierror
+					INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state, attribute_val_in, attribute_val_out
+					LOGICAL :: flag""",
+                """(OLDCOMM, COMM_KEYVAL, EXTRA_STATE, ATTRIBUTE_VAL_IN, &
+                    & ATTRIBUTE_VAL_OUT, FLAG, IERROR)
+                    INTEGER OLDCOMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE, ATTRIBUTE_VAL_IN,
+                    ATTRIBUTE_VAL_OUT
+                    LOGICAL FLAG"""
+                ],
+                "MPI_Comm_delete_attr_function": [
+                """(comm, comm_keyval, attribute_val, extra_state, ierror)
+                    import MPI_Comm, MPI_ADDRESS_KIND
+                    TYPE(MPI_Comm) :: comm
+                    INTEGER :: comm_keyval, ierror
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: attribute_val, extra_state""",
+                """(COMM, COMM_KEYVAL, ATTRIBUTE_VAL, EXTRA_STATE, IERROR)
+                    INTEGER COMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) ATTRIBUTE_VAL, EXTRA_STATE"""
+                ],
+                "MPI_Win_copy_attr_function": [
+                """(oldwin, win_keyval, extra_state, attribute_val_in, &
+                    & attribute_val_out, flag, ierror)
+                    import MPI_Win, MPI_ADDRESS_KIND
+					TYPE(MPI_Win) :: oldwin
+					INTEGER :: win_keyval, ierror
+					INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state, attribute_val_in, attribute_val_out
+					LOGICAL :: flag""",
+                """(OLDCOMM, COMM_KEYVAL, EXTRA_STATE, ATTRIBUTE_VAL_IN, &
+                    & ATTRIBUTE_VAL_OUT, FLAG, IERROR)
+                    INTEGER OLDCOMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE, ATTRIBUTE_VAL_IN,
+                    ATTRIBUTE_VAL_OUT
+                    LOGICAL FLAG"""
+                ],
+                "MPI_Win_delete_attr_function": [
+                """(win, win_keyval, attribute_val, extra_state, ierror)
+                    import MPI_Win, MPI_ADDRESS_KIND
+                    TYPE(MPI_Win) :: win
+                    INTEGER :: win_keyval, ierror
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: attribute_val, extra_state""",
+                """(COMM, COMM_KEYVAL, ATTRIBUTE_VAL, EXTRA_STATE, IERROR)
+                    INTEGER COMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) ATTRIBUTE_VAL, EXTRA_STATE"""
+                ],
+                "MPI_Type_copy_attr_function": [
+                """(oldtype, type_keyval, extra_state, attribute_val_in, &
+                    & attribute_val_out, flag, ierror)
+                    import MPI_Datatype, MPI_ADDRESS_KIND
+                     TYPE(MPI_Datatype) :: oldtype
+                     INTEGER :: type_keyval, ierror
+                     INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state, attribute_val_in, attribute_val_out
+                     LOGICAL :: flag""",
+                """(OLDCOMM, COMM_KEYVAL, EXTRA_STATE, ATTRIBUTE_VAL_IN, &
+                    & ATTRIBUTE_VAL_OUT, FLAG, IERROR)
+                    INTEGER OLDCOMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE, ATTRIBUTE_VAL_IN,
+                    ATTRIBUTE_VAL_OUT
+                    LOGICAL FLAG"""
+                ],
+                "MPI_Type_delete_attr_function": [
+                """(type, type_keyval, attribute_val, extra_state, ierror)
+                    import MPI_Datatype, MPI_ADDRESS_KIND
+                    TYPE(MPI_Datatype) :: type
+                    INTEGER :: type_keyval, ierror
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: attribute_val, extra_state""",
+                """(COMM, COMM_KEYVAL, ATTRIBUTE_VAL, EXTRA_STATE, IERROR)
+                    INTEGER COMM, COMM_KEYVAL, IERROR
+                    INTEGER(KIND=MPI_ADDRESS_KIND) ATTRIBUTE_VAL, EXTRA_STATE"""
+                ],
+                "MPI_Copy_function": [
+                """(OLDCOMM, KEYVAL, EXTRA_STATE, ATTRIBUTE_VAL_IN, &
+                    & ATTRIBUTE_VAL_OUT, FLAG, IERR)
+                    INTEGER OLDCOMM, KEYVAL, EXTRA_STATE, ATTRIBUTE_VAL_IN,
+                    ATTRIBUTE_VAL_OUT, IERR
+                    LOGICAL FLAG""",
+                ],
+                "MPI_Delete_function": [
+                """(COMM, KEYVAL, ATTRIBUTE_VAL, EXTRA_STATE, IERR)
+                    INTEGER COMM, KEYVAL, ATTRIBUTE_VAL, EXTRA_STATE, IERR"""
+                ],
+                "MPI_User_function": [
+                """(invec, inoutvec, len, datatype)
+                    import MPI_Datatype, C_PTR
+                    TYPE(C_PTR), VALUE :: invec, inoutvec
+                    INTEGER :: len
+                    TYPE(MPI_Datatype) :: datatype""",
+                """(INVEC, INOUTVEC, LEN, DATATYPE)
+                INTEGER INVEC(LEN), INOUTVEC(LEN)
+                INTEGER LEN, DATATYPE"""
+                ],
+                "MPI_Datarep_extent_function": [
+                """(datatype, extent, extra_state, ierror)
+                    import MPI_Datatype, MPI_ADDRESS_KIND
+                    TYPE(MPI_Datatype) :: datatype
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: extent, extra_state
+                    INTEGER :: ierror""",
+                """(DATATYPE, EXTENT, EXTRA_STATE, IERROR)
+                INTEGER DATATYPE, IERROR
+                INTEGER(KIND=MPI_ADDRESS_KIND) EXTENT, EXTRA_STATE"""
+                ],
+                "MPI_Datarep_conversion_function": [
+                """(userbuf, datatype, count, &
+                & filebuf, position, extra_state, ierror)
+                import MPI_Datatype, MPI_OFFSET_KIND, MPI_ADDRESS_KIND, C_PTR
+                TYPE(C_PTR), VALUE :: userbuf, filebuf
+                TYPE(MPI_Datatype) :: datatype
+                INTEGER :: count, ierror
+                INTEGER(KIND=MPI_OFFSET_KIND) :: position
+                INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state""",
+                """(USERBUF, DATATYPE, COUNT, FILEBUF, POSITION, &
+                & EXTRA_STATE, IERROR)
+                INTEGER USERBUF(10), FILEBUF(10)
+                INTEGER DATATYPE, COUNT, IERROR
+                INTEGER(KIND=MPI_OFFSET_KIND) POSITION
+                INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE"""
+                ],
+                "MPI_Comm_errhandler_function": [
+                """(comm, error_code)
+                    import MPI_Comm
+                    TYPE(MPI_Comm) :: comm
+                    INTEGER :: error_code""",
+                """(COMM, ERROR_CODE)
+                    INTEGER COMM, ERROR_CODE"""
+                ],
+                "MPI_Session_errhandler_function": [
+                """(comm, error_code)
+                    import MPI_Session
+                    TYPE(MPI_Session) :: comm
+                    INTEGER :: error_code""",
+                """(COMM, ERROR_CODE)
+                    INTEGER COMM, ERROR_CODE"""
+                ],
+                "MPI_Win_errhandler_function": [
+                """(comm, error_code)
+                    import MPI_Win
+                    TYPE(MPI_Win) :: comm
+                    INTEGER :: error_code""",
+                """(COMM, ERROR_CODE)
+                    INTEGER COMM, ERROR_CODE"""
+                ],
+                "MPI_File_errhandler_function": [
+                """(comm, error_code)
+                    import MPI_File
+                    TYPE(MPI_File) :: comm
+                    INTEGER :: error_code""",
+                """(COMM, ERROR_CODE)
+                    INTEGER COMM, ERROR_CODE"""
+                ],
+                "MPI_Grequest_free_function": [
+                """(extra_state, ierror)
+                    IMPORT MPI_ADDRESS_KIND
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state
+                    INTEGER :: ierror""",
+                    """(EXTRA_STATE, IERROR)
+                    INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE
+                    INTEGER IERROR"""
+                        ],
+                "MPI_Grequest_query_function": [
+                 """(extra_state, status, ierror)
+                    import MPI_ADDRESS_KIND, MPI_Status
+                    INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state
+                    TYPE(MPI_Status) :: status
+                    INTEGER :: ierror""",
+                    """(EXTRA_STATE, STATUS, IERROR)
+                    INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE
+                    INTEGER STATUS(MPI_STATUS_SIZE), IERROR"""
+                        ],
+                "MPI_Grequest_cancel_function": [
+                """(extra_state, complete, ierror)
+                    IMPORT MPI_ADDRESS_KIND
+                   INTEGER(KIND=MPI_ADDRESS_KIND) :: extra_state
+                    LOGICAL :: complete
+                    INTEGER :: ierror""",
+                """(EXTRA_STATE, COMPLETE, IERROR)
+                INTEGER(KIND=MPI_ADDRESS_KIND) EXTRA_STATE
+                LOGICAL COMPLETE
+                INTEGER IERROR"""
+                ]
+        }
+        target = self._get_attr('func_type')
+        assert(target in user_func_decls)
         funcdef = ""
         decls = ""
         if lang == "f08":
-            funcdef = """INTERFACE
-                SUBROUTINE the_func(val, err)
-                    import {d}
-                    TYPE({d}) :: val
-                    INTEGER :: err
-                END SUBROUTINE
-                END INTERFACE""".format(d=datatype)
-            decls = "PROCEDURE(the_func), POINTER :: {}".format(varname)
+            sub_name = "{}_def{}".format(target, random.randint(0, 100))
+            funcdef = """
+            INTERFACE
+            SUBROUTINE {}{}
+            END SUBROUTINE
+            END INTERFACE""".format(sub_name, user_func_decls.get(target, ("fail", "fail"))[0])
+            decls = "PROCEDURE({}), POINTER :: {}".format(sub_name, varname)
         else:
             funcdef = """
 subroutine {}(val, ierr)
     integer val, ierr
 end subroutine""".format(varname)
+            decls = "EXTERNAL {}".format(varname)
 
         return (funcdef, decls)
 
@@ -232,12 +423,26 @@ end subroutine""".format(varname)
         return self._get_attr("param_direction")
 
     def is_array(self):
-        return self._get_attr("length") is not None
+        return self.array_dims() is not None
 
     def array_dims(self):
         l = self._get_attr("length")
-        if l is None:
-            return l
+
+        #length may be none but param still an array
+        # -> convert
+        if not l:
+            l = list()
+
+        # special case #1
+        if self.kind() == "F90_STATUS":
+            l.append("10")
+        # special case #2
+        elif self.kind() == "ERROR_CODE" and "array" in self.name():
+            l.append("10")
+
+        if len(l) <= 0:
+            return None
+
         if not isinstance(l, list):
             l = [l]
         return l
@@ -268,8 +473,8 @@ end subroutine""".format(varname)
     def get_f_pointer(self, ver="f"):
         if self.kind() in ['BUFFER', 'C_BUFFER2', 'C_BUFFER3',
                                     'C_BUFFER4',
-                                    'EXTRA_STATE2', 'ATTRIBUTE_VAL',
-                                    'ATTRIBUTE_VAL_10', 'STRING_ARRAY']:
+                                    'STATUS', "STRING_ARRAY"
+                                    'ATTRIBUTE_VAL_10']:
             if ver in ['f', 'f77', 'f90']:
                 return 10
         return None
@@ -292,8 +497,12 @@ end subroutine""".format(varname)
         dims = ",".join([elt for elt in dims])
         if lang in ['f08']:
             # special case, declare character array
-            if self.kind() in ['STRING', 'STRING_ARRAY', "STRING_2DARRAY"]:
+            if self.kind() == "STRING":
                 dims = "({})".format(dims if dims else "10")
+            elif self.kind() == "STRING_ARRAY":
+                dims = "({}), DIMENSION({})".format(dims if dims else "10", "10")
+            elif self.kind() == "STRING_2DARRAY":
+                dims = "({}), DIMENSION({}, {})".format(dims if dims else "10", "10", "10")
             elif dims: # otherwise, declare dimensions
                 dims = ", DIMENSION({})".format(dims)
             else:
